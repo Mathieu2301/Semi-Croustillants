@@ -35,6 +35,7 @@
                 <p>SEMI-CROUSTILLANTS</p>
             </header>
 
+            <div class="container_title">ASK FOR A SCRIM</div>
             <div id="ask_form" class="container two-col">
                 <div class="calendar_container">
                     <div class="title">{{calendar.month}} {{calendar.year}}</div>
@@ -56,23 +57,52 @@
                     </ul>
                 </div>
                 <div class="right_form">
-                    <div class="input" v-bind:class="{ valid: (form.discordID.length > 7 && form.discordID.includes('#')) }" >
+                    <div class="input" v-bind:class="{ valid: validDiscordID(form.discordID) }" >
                         <div class="name">DISCORD ID</div>
-                        <input type="text" placeholder="Beck#4213">
+                        <input type="text" v-model="form.discordID" placeholder="Beck#4213">
                     </div>
                     <div class="input" v-bind:class="{ valid: form.team_name.length >= 3 }" >
                         <div class="name">TEAM NAME</div>
-                        <input type="text" placeholder="Les très croustillants">
+                        <input type="text" v-model="form.team_name" placeholder="Les très croustillants">
                     </div>
                     <div class="input" v-bind:class="{ valid: calendar.selected != 0 }" >
                         <div class="name">DATE</div>
-                        <input type="text" v-bind:value="calendar.selected | date">
+                        <input type="text" v-bind:value="calendar.selected | date" disabled>
                     </div>
-                    <div class="input" v-bind:class="{ valid: form.time.length > 2 }" >
+                    <div class="input" v-bind:class="{ valid: form.time != 'X' }" >
                         <div class="name">TIME</div>
-                        <input type="text" value="">
+                        <div class="select">
+                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
+                            <select v-model="form.time">
+                                <option value="X"></option>
+                                <option value="9">9:00</option>
+                                <option value="10">10:00</option>
+                                <option value="11">11:00</option>
+                                <option value="12">12:00</option>
+                                <option value="13">13:00</option>
+                                <option value="14">14:00</option>
+                                <option value="15">15:00</option>
+                                <option value="16">16:00</option>
+                                <option value="17">17:00</option>
+                                <option value="18">18:00</option>
+                                <option value="19">19:00</option>
+                                <option value="20">20:00</option>
+                                <option value="21">21:00</option>
+                                <option value="22">22:00</option>
+                                <option value="23">23:00</option>
+                                <option value="0">0:00</option>
+                                <option value="1">1:00</option>
+                                <option value="2">2:00</option>
+                                <option value="3">3:00</option>
+                                <option value="4">4:00</option>
+                                <option value="5">5:00</option>
+                                <option value="6">6:00</option>
+                                <option value="7">7:00</option>
+                                <option value="8">8:00</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="input" v-bind:class="{ valid: form.control_map.length > 2 }" >
+                    <div class="input" v-bind:class="{ valid: form.control_map != 0 }" >
                         <div class="name">CONTROL MAP</div>
                         <div class="select">
                             <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
@@ -90,7 +120,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="input" v-bind:class="{ valid: form.hybrid_map.length > 2 }" >
+                    <div class="input" v-bind:class="{ valid: form.hybrid_map != 0 }" >
                         <div class="name">HYBRID MAP</div>
                         <div class="select">
                             <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
@@ -108,7 +138,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="input" v-bind:class="{ valid: form.assault_map.length > 2 }" >
+                    <div class="input" v-bind:class="{ valid: form.assault_map != 0 }" >
                         <div class="name">ASSAULT MAP</div>
                         <div class="select">
                             <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
@@ -126,7 +156,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="input" v-bind:class="{ valid: form.escort_map.length > 2 }" >
+                    <div class="input" v-bind:class="{ valid: form.escort_map != 0 }" >
                         <div class="name">ESCORT MAP</div>
                         <div class="select">
                             <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
@@ -144,12 +174,13 @@
                             </select>
                         </div>
                     </div>
+                    <button class="submit_btn" @click="submit">SEND</button>
                 </div>
             </div>
 
         </div>
 
-        <script src="./js/vue.dev.js"></script>
+        <script src="./js/vue.min.js"></script>
         <script src="./js/jquery.min.js"></script>
         <script src="./js/socket.io.js"></script>
         <script src="./index.js"></script>

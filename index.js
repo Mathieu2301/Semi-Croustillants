@@ -20,7 +20,7 @@ var ask_form = new Vue({
         form: {
             discordID:"",
             team_name:"",
-            time:"",
+            time:"X",
             control_map:"",
             hybrid_map:"",
             assault_map:"",
@@ -30,18 +30,31 @@ var ask_form = new Vue({
     methods: {
         selectDate: function(date){
             if (date > Date.now()){
-
                 this.calendar.selected = date;
             }
         },
         submit: function(e){
             e.preventDefault();
         },
+        validDiscordID: function(discordID){
+            if (discordID.length >= 7 && discordID.includes('#')){
+                var split = discordID.split("#");
+                var name = split[0];
+                var tag = split[1];
+                if (!isNaN(tag) && name.length >= 2 && tag.length >= 4 && tag.length <= 6){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
     },
     filters: {
         date: function(time){
             var date = new Date(time);
-            return (addZeros(date.getDate()) + "/" + addZeros(date.getMonth()+1))
+            return (addZeros(date.getDate()) + "/" + addZeros(date.getMonth()+1) + "/" + date.getFullYear())
         }
     }
 });
@@ -49,7 +62,8 @@ var ask_form = new Vue({
 
 getMonthInfos(new Date(today), function(firstMonday){
     
-    while (ask_form.calendar.days.length != 35){
+    while (ask_form.calendar.days.length != 42){
+        if (new Date(today).getMonth()*30+(new Date(today).getDate()+3) > firstMonday.getDate()+30*firstMonday.getMonth()) ask_form.calendar.selected = firstMonday.getTime();
         ask_form.calendar.days.push({
             time: firstMonday.getTime(),
             date: firstMonday.getDate(),

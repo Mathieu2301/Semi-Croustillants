@@ -32,9 +32,23 @@ html, body {
     .right_form {
         width: calc(100% - 250px) !important;
     }
+
+    .calendar_container>.calendar>li.day:not(.available):hover{
+        background-color: var(--main3-transparent);
+        cursor: not-allowed;
+    }
+
+    .calendar_container>.calendar>li.day.available:hover{
+        background-color: var(--main1-transparent);
+        cursor: pointer;
+    }
 }
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
+    .calendar_container>.calendar>li.title {
+        padding-bottom: 0 !important;
+    }
+    
     .calendar_container>.calendar>li.day {
         margin: 1px 1px !important;
         padding: 12px 0 0 0 !important;
@@ -65,7 +79,7 @@ header {
     background-color: var(--dark-blue);
     height: 86px;
     z-index: 10;
-    box-shadow: 0px 10px #f3ad43;
+    box-shadow: 0px 10px var(--main);
 }
 
 header>p {
@@ -87,10 +101,21 @@ header>p {
     cursor: pointer;
 }
 
+.container_title {
+  display: block;
+  margin-left: 25px;
+  margin-top: 25px;
+  margin-bottom: 14px;
+  width: calc(100% - 50px);
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 5px solid var(--main);
+}
+
 .container {
     background-image: url(../images/bg.png);
     background-color: var(--light1);
-    margin: 25px;
+    margin: 0 25px;
     height: 500px;
     padding: 15px;
 }
@@ -101,7 +126,7 @@ header>p {
 }
 
 .calendar_container {
-    height: 255px;
+    height: 300px;
     width: 580px;
     padding: 5px;
 }
@@ -138,16 +163,6 @@ header>p {
     background-color: var(--main2-transparent);
 }
 
-.calendar_container>.calendar>li.day:not(.available):hover{
-    background-color: var(--main3-transparent);
-    cursor: not-allowed;
-}
-
-.calendar_container>.calendar>li.day.available:hover{
-    background-color: var(--main1-transparent);
-    cursor: pointer;
-}
-
 .calendar_container>.calendar>li.day.available:active,
 .calendar_container>.calendar>li.day.available.selected{
     background-color: var(--main);
@@ -163,7 +178,6 @@ header>p {
 .calendar_container>.calendar>li.day.outofmonth {
     color: var(--light4);
 }
-
 
 .right_form {
     margin: 0 auto;
@@ -185,7 +199,9 @@ header>p {
     outline: none;
     font-size: 13px;
 }
-.input.valid>input{
+
+.input.valid>input,
+.input.valid>div.select{
   border-bottom: solid 1px var(--main);
 }
 
@@ -207,6 +223,28 @@ header>p {
 .select>svg {
   float: right;
   fill: #323D54;
+}
+
+.submit_btn {
+  width: calc(100% + 12px);
+  padding: 9px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--main);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--dark3);
+  cursor: pointer;
+  outline: none;
+}
+
+.submit_btn:hover {
+
+}
+
+.submit_btn:active {
+
 }
 
 footer {
