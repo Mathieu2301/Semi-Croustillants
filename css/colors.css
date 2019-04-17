@@ -1,11 +1,9 @@
 :root{
     --loader-c1: #006364;
-    --loader-c2: #00ffff;
-
-    --scrollbar: #F3AD43; 
-    --scrollbar-hover: #f3ad439f; 
-    --scrollbar-active: #ffd9a19f; 
-
+    --loader-c2: #F3AD43;
+    --scrollbar: #F3AD43;
+    --scrollbar-hover: #f3ad439f;
+    --scrollbar-active: #ffd9a19f;
     --dark-blue:#181B2C;
     --light1: #FFFFFF;
     --light2: #F1F1F1;

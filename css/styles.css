@@ -11,6 +11,16 @@ html, body {
 @media screen and (min-width: 1050px) { /* PC ONLY */
   ::-webkit-scrollbar-button:vertical:decrement{height:86px;background-color:var(--dark-blue);}
 
+  .calendar_container>.calendar>li.day:not(.available):hover{
+        background-color: var(--main3-transparent);
+        cursor: not-allowed;
+    }
+
+    .calendar_container>.calendar>li.day.available:hover{
+        background-color: var(--main1-transparent);
+        cursor: pointer;
+    }
+
 }
 
 @media screen and (max-width: 1050px) { /* MOBILE/TABLET ONLY */
@@ -32,16 +42,6 @@ html, body {
     .right_form {
         width: calc(100% - 250px) !important;
     }
-
-    .calendar_container>.calendar>li.day:not(.available):hover{
-        background-color: var(--main3-transparent);
-        cursor: not-allowed;
-    }
-
-    .calendar_container>.calendar>li.day.available:hover{
-        background-color: var(--main1-transparent);
-        cursor: pointer;
-    }
 }
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
@@ -60,6 +60,9 @@ html, body {
     }
 }
 
+.body{
+    margin-bottom: 5%;
+}
 
 .body *{
     transition-duration: 0.3s;
@@ -75,6 +78,7 @@ html, body {
 header {
     position: fixed;
     top: 0px;
+    /* top: -86px; */
     width: 100%;
     background-color: var(--dark-blue);
     height: 86px;
@@ -239,12 +243,36 @@ header>p {
   outline: none;
 }
 
-.submit_btn:hover {
+.submit_btn:hover {background-color: var(--main1-transparent);}
 
+.submit_btn:active {background-color: var(--light4);}
+
+.profils_grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-column-gap: 25px;
+    margin: 0 25px;
 }
 
-.submit_btn:active {
+.profils_grid>.profil {
+    
+}
 
+.profils_grid>.profil>img {
+    background-color: black;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profils_grid>.profil>p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  height: 12px;
+}
+
+.profils_grid>.profil>p>img{
+    height: 11px;
 }
 
 footer {

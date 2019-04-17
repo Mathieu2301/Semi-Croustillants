@@ -7,10 +7,47 @@ function getMonthInfos(date, callback){
 
 var today = Date.now();
 
+var profils_grid = new Vue({
+    el: '#profils_grid',
+    data: {
+        profils:[
+            {
+                name: "Opéra",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Opéra",
+                type: "tank"
+            },
+            {
+                name: "Hoshin",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Hoshin",
+                type: "tank"
+            },
+            {
+                name: "Beck",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Beck",
+                type: "dps"
+            },
+            {
+                name: "Garm",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Garm",
+                type: "dps"
+            },
+            {
+                name: "Kadwall",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Kadwall",
+                type: "support"
+            },
+            {
+                name: "Manu",
+                image: "https://dummyimage.com/600x600/ffffff/000000.gif&text=Manu",
+                type: "support"
+            },
+        ]
+    }
+});
+
 var ask_form = new Vue({
     el: '#ask_form',
     data: {
-        visible: false,
         calendar: {
             year: new Date(today).getFullYear(),
             month: months[new Date(today).getMonth()],
@@ -82,5 +119,25 @@ function addDay(nbr=1, date=new Date()){date.setTime(date.getTime()+(nbr*8640000
 function addZeros(val){return(val<10)?'0'+val:val}
 
 $(function(){
-    $(".body").fadeIn();
+
+    setTimeout(function(){
+        $(".loader").fadeOut(300, function(){
+            $(".body").fadeIn();
+        })
+    }, 500);
+
+    var scroll_pos = 0;
+
+    $(document).scroll(function() {
+        let new_scroll_pos = $(this).scrollTop()
+        const scrDown = (new_scroll_pos > scroll_pos);
+        scroll_pos = new_scroll_pos;
+        
+        if (scrDown){
+            $("header").css("top", "-86px");
+        }else{
+            $("header").css("top", "0");
+        }
+        
+    });
 });

@@ -23,17 +23,25 @@
         <link rel="stylesheet" href="./css/styles.css">
         <link rel="stylesheet" href="./css/loading.css">
         <link rel="stylesheet" href="./css/scrollbar.css">
-        <link rel="stylesheet" href="./css/styles.css">
     
     </head>
 
     <body>
+        <div class="loader"><img src="./images/tank.svg"></div>
 
         <div class="body" style="display:none">
 
             <header>
                 <p>SEMI-CROUSTILLANTS</p>
             </header>
+
+            <div class="container_title">MEET THE SEMI-CROUSTILLANTS</div>
+            <div id="profils_grid" class="profils_grid">
+                <div class="profil" v-for="profil in profils">
+                    <img v-bind:src="profil.image" v-bind:alt="profil.name">
+                    <p><img v-bind:src="'./images/' + profil.type + '.svg'" v-bind:alt="profil.type"/> {{profil.name}}</p>
+                </div>
+            </div>
 
             <div class="container_title">ASK FOR A SCRIM</div>
             <div id="ask_form" class="container two-col">

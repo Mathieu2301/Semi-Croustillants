@@ -1,20 +1,12 @@
 .loader {
-  width: 45px;
-  height: 75px;
-  top: 47%;
-  left: 50%;
-  margin-left: -23px;
+  top: 40%;
+  left: calc(50% - 23px);
   position: absolute;
   -webkit-animation: loader_animation 1.7s infinite ease-in-out;
   animation: loader_animation 1.7s infinite ease-in-out;
 }
-.loader g {
-  -webkit-animation: loader_color_animation 1.7s infinite ease-in-out;
-  animation: loader_color_animation 1.7s infinite ease-in-out;
-}
-svg {
-  -webkit-user-drag: none;
-  user-select: none;
+.loader>img{
+  height: 70px;
 }
 @-webkit-keyframes loader_animation {
   0% { -webkit-transform: perspective(120px) rotateY(0deg) }

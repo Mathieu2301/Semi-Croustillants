@@ -3,6 +3,6 @@
     ::-webkit-scrollbar-thumb{background:var(--scrollbar);}
     ::-webkit-scrollbar-thumb:hover{background:var(--scrollbar-hover);}
     ::-webkit-scrollbar-thumb:active{background:var(--scrollbar-active);}
-    ::-webkit-scrollbar:horizontal{height:10px;background:#19222D;}
-    ::-webkit-scrollbar:vertical{height:10px;background:#19222D;}
+    ::-webkit-scrollbar:horizontal{height:10px;background:var(--dark-blue);}
+    ::-webkit-scrollbar:vertical{height:10px;background:var(--dark-blue);}
 }
