@@ -1,6 +1,6 @@
 
 
-
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function getMonthInfos(date, callback){
     var firstDay = date;
@@ -38,6 +38,8 @@ var ask_form = new Vue({
     data: {
         visible: false,
         calendar: {
+            year: new Date(Date.now()).getFullYear(),
+            month: months[new Date(Date.now()).getMonth()],
             days: []
         }
     },
@@ -51,9 +53,15 @@ var ask_form = new Vue({
 getMonthInfos(fevrier, function(firstDay, firstMonday){
     
     while (ask_form.calendar.days.length != 35){
-        ask_form.calendar.days.push(firstMonday.getDate());
+        ask_form.calendar.days.push({
+            date: firstMonday.getDate(),
+            month: firstMonday.getMonth(),
+            outofmonth: (firstMonday.getMonth() != fevrier.getMonth()),
+            today: (firstMonday.getDate() == fevrier.getDate() && firstMonday.getMonth() == fevrier.getMonth()),
+            available: (firstMonday.getDate()*firstMonday.getMonth() > fevrier.getMonth()*fevrier.getDate()),
+            prefer: false,
+        });
         addDay(1, firstMonday);
-
     }
 
 })

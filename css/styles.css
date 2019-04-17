@@ -76,29 +76,63 @@ header svg {
     background-color: var(--light1);
 }
 
-.calendar {
-    width: 640px;
-    height: 350px;
+.calendar_container {
+    width: 580px;
+    padding: 5px
+}
+
+.calendar_container>.title {
+    background-color: var(--light2);
+    text-align: center;
+    padding: 13px;
+    font-size: 18px;
+}
+
+.calendar_container>.calendar {
+    width: 100%;
+    height: 100%;
+    margin: 0;
     padding: 0;
     display: grid;
-    grid: auto / auto auto auto auto auto auto auto;
+    grid-template-columns: repeat(7, 1fr);
     list-style: none;
     text-align: center;
 }
 
-.calendar>li:not(.title){
-    margin: 0 5px;
-    padding: 20px 0;
-    background-color: var(--main2);
-}
-
-.calendar>li.title{
+.calendar_container>.calendar>li.title{
     margin: 0 5px;
     padding: 10px 0;
     font-weight: bold;
     border-bottom: solid var(--main) 2px;
+    margin-bottom: 5px;
 }
 
+.calendar_container>.calendar>li.day{
+    margin: 0 5px;
+    padding: 12px 0;
+    background-color: var(--main2-transparent);
+}
+
+.calendar_container>.calendar>li.day:not(.available):hover{
+    background-color: var(--main3-transparent);
+    cursor: not-allowed;
+}
+
+.calendar_container>.calendar>li.day.available:hover{
+    background-color: var(--main1-transparent);
+    cursor: pointer;
+}
+
+.calendar_container>.calendar>li.day.prefer {
+    box-shadow: inset 0px 0px 0px 1px var(--main);
+}
+.calendar_container>.calendar>li.day.today {
+    font-weight: bold;
+    box-shadow: inset 0px 0px 0px 1px var(--dark1);
+}
+.calendar_container>.calendar>li.day.outofmonth {
+    color: var(--light4);
+}
 
 footer {
     background-color: var(--light4);

@@ -32,16 +32,19 @@
         <div class="body" style="display:none">
 
             <div id="ask_form" class="container">
-                <ul class="calendar">
-                    <li class="title">Mon</li>
-                    <li class="title">Tue</li>
-                    <li class="title">Wed</li>
-                    <li class="title">Thu</li>
-                    <li class="title">Fri</li>
-                    <li class="title">Sat</li>
-                    <li class="title">Sun</li>
-                    <li v-for="day in calendar.days">{{day}}</li>
-                </ul>
+                <div class="calendar_container">
+                    <div class="title">{{calendar.month}} {{calendar.year}}</div>
+                    <ul class="calendar">
+                        <li class="title">Mon</li>
+                        <li class="title">Tue</li>
+                        <li class="title">Wed</li>
+                        <li class="title">Thu</li>
+                        <li class="title">Fri</li>
+                        <li class="title">Sat</li>
+                        <li class="title">Sun</li>
+                        <li class="day" v-for="day in calendar.days" v-bind:class="{ today: day.today, available: day.available, outofmonth: day.outofmonth }">{{day.date}}</li>
+                    </ul>
+                </div>
             </div>
 
         </div>
