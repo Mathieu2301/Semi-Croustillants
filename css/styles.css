@@ -19,7 +19,7 @@ html, body {
     .calendar_container>.calendar>li.day.available:hover{
         background-color: var(--main1-transparent);
         cursor: pointer;
-    }
+    }    
 
 }
 
@@ -42,6 +42,10 @@ html, body {
     .right_form {
         width: calc(100% - 250px) !important;
     }
+
+    .profils_grid {
+        grid-column-gap: 10px !important;
+    }
 }
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
@@ -57,6 +61,12 @@ html, body {
     .right_form {
         margin: 0 !important;
         width: calc(100% - 13px) !important;
+    }
+
+    .profils_grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-column-gap: 15px !important;
+        grid-row-gap: 15px !important;
     }
 }
 
@@ -78,7 +88,6 @@ html, body {
 header {
     position: fixed;
     top: 0px;
-    /* top: -86px; */
     width: 100%;
     background-color: var(--dark-blue);
     height: 86px;
@@ -252,10 +261,6 @@ header>p {
     grid-template-columns: repeat(6, 1fr);
     grid-column-gap: 25px;
     margin: 0 25px;
-}
-
-.profils_grid>.profil {
-    
 }
 
 .profils_grid>.profil>img {
