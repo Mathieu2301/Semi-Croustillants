@@ -13,7 +13,7 @@
         <meta name="msapplication-navbutton-color" content="#F3AD43">
         <meta name="apple-mobile-web-app-status-bar-style" content="#F3AD43">
         
-        <title>Semi-Croustillants Overwatch Team</title>
+        <title>Semi-Croustillants</title>
 
         <!-- <script>if (location.protocol != 'https:') location.href = 'https:' + window.location.href.substring(window.location.protocol.length);</script>
 
@@ -31,7 +31,11 @@
 
         <div class="body" style="display:none">
 
-            <div id="ask_form" class="container">
+            <header>
+                <p>SEMI-CROUSTILLANTS</p>
+            </header>
+
+            <div id="ask_form" class="container two-col">
                 <div class="calendar_container">
                     <div class="title">{{calendar.month}} {{calendar.year}}</div>
                     <ul class="calendar">
@@ -42,14 +46,110 @@
                         <li class="title">Fri</li>
                         <li class="title">Sat</li>
                         <li class="title">Sun</li>
-                        <li class="day" v-for="day in calendar.days" v-bind:class="{ today: day.today, available: day.available, outofmonth: day.outofmonth }">{{day.date}}</li>
+                        <li class="day" v-for="day in calendar.days" v-bind:class="{
+                            today: day.today,
+                            available: day.available,
+                            outofmonth: day.outofmonth,
+                            prefer: day.prefer,
+                            selected: calendar.selected == day.time
+                        }" @click="selectDate(day.time)">{{day.date}}</li>
                     </ul>
+                </div>
+                <div class="right_form">
+                    <div class="input" v-bind:class="{ valid: (form.discordID.length > 7 && form.discordID.includes('#')) }" >
+                        <div class="name">DISCORD ID</div>
+                        <input type="text" placeholder="Beck#4213">
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.team_name.length >= 3 }" >
+                        <div class="name">TEAM NAME</div>
+                        <input type="text" placeholder="Les très croustillants">
+                    </div>
+                    <div class="input" v-bind:class="{ valid: calendar.selected != 0 }" >
+                        <div class="name">DATE</div>
+                        <input type="text" v-bind:value="calendar.selected | date">
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.time.length > 2 }" >
+                        <div class="name">TIME</div>
+                        <input type="text" value="">
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.control_map.length > 2 }" >
+                        <div class="name">CONTROL MAP</div>
+                        <div class="select">
+                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
+                            <select v-model="form.control_map">
+                                <option value="0"></option>
+                                <option value="1">MAP_1</option>
+                                <option value="2">MAP_2</option>
+                                <option value="3">MAP_3</option>
+                                <option value="4">MAP_4</option>
+                                <option value="5">MAP_5</option>
+                                <option value="6">MAP_6</option>
+                                <option value="7">MAP_7</option>
+                                <option value="8">MAP_8</option>
+                                <option value="9">MAP_9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.hybrid_map.length > 2 }" >
+                        <div class="name">HYBRID MAP</div>
+                        <div class="select">
+                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
+                            <select v-model="form.hybrid_map">
+                                <option value="0"></option>
+                                <option value="1">MAP_1</option>
+                                <option value="2">MAP_2</option>
+                                <option value="3">MAP_3</option>
+                                <option value="4">MAP_4</option>
+                                <option value="5">MAP_5</option>
+                                <option value="6">MAP_6</option>
+                                <option value="7">MAP_7</option>
+                                <option value="8">MAP_8</option>
+                                <option value="9">MAP_9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.assault_map.length > 2 }" >
+                        <div class="name">ASSAULT MAP</div>
+                        <div class="select">
+                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
+                            <select v-model="form.assault_map">
+                                <option value="0"></option>
+                                <option value="1">MAP_1</option>
+                                <option value="2">MAP_2</option>
+                                <option value="3">MAP_3</option>
+                                <option value="4">MAP_4</option>
+                                <option value="5">MAP_5</option>
+                                <option value="6">MAP_6</option>
+                                <option value="7">MAP_7</option>
+                                <option value="8">MAP_8</option>
+                                <option value="9">MAP_9</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input" v-bind:class="{ valid: form.escort_map.length > 2 }" >
+                        <div class="name">ESCORT MAP</div>
+                        <div class="select">
+                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
+                            <select v-model="form.escort_map">
+                                <option value="0"></option>
+                                <option value="1">MAP_1</option>
+                                <option value="2">MAP_2</option>
+                                <option value="3">MAP_3</option>
+                                <option value="4">MAP_4</option>
+                                <option value="5">MAP_5</option>
+                                <option value="6">MAP_6</option>
+                                <option value="7">MAP_7</option>
+                                <option value="8">MAP_8</option>
+                                <option value="9">MAP_9</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <script src="./js/vue.min.js"></script>
+        <script src="./js/vue.dev.js"></script>
         <script src="./js/jquery.min.js"></script>
         <script src="./js/socket.io.js"></script>
         <script src="./index.js"></script>

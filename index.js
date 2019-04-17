@@ -1,78 +1,71 @@
-
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function getMonthInfos(date, callback){
-    var firstDay = date;
-    addDay(1-firstDay.getDate(), firstDay)
-    
     var firstMonday = new Date(date.getFullYear(), date.getMonth(), 1);
-    addDay(1-firstMonday.getDay(), firstMonday)
-
-    callback(firstDay, firstMonday)
+    callback(addDay(1-firstMonday.getDay(), firstMonday))
 }
 
-
-
-console.log("TEST 1"); // Février test
-var fevrier = new Date(Date.now());
-fevrier.setDate(23)
-fevrier.setMonth(1)
-getMonthInfos(fevrier, function(firstDay, firstMonday){
-    console.log("Aujourd'hui : --------- " + printDate(fevrier) + " => " + ((printDate(fevrier) == "Samedi 23/02/2019") ? "OK !" : "Samedi 23/02/2019"));
-    console.log("Premier jour : -------- " + printDate(firstDay) + " => " + ((printDate(firstDay) == "Vendredi 01/02/2019") ? "OK !" : "Vendredi 01/02/2019"));
-    console.log("Premier lundi : ------- " + printDate(firstMonday) + " => " + ((printDate(firstMonday) == "Lundi 28/01/2019") ? "OK !" : "Lundi 28/01/2019"));
-})
-
-console.log("TEST 2"); // True test
-
-getMonthInfos(new Date(Date.now()), function(firstDay, firstMonday){
-    console.log("Aujourd'hui : --------- " + printDate(new Date(Date.now())) + " => " + ((printDate(new Date(Date.now())) == "Mercredi 17/04/2019") ? "OK !" : "Mercredi 17/04/2019"));
-    console.log("Premier jour : -------- " + printDate(firstDay) + " => " + ((printDate(firstDay) == "Lundi 01/04/2019") ? "OK !" : "Lundi 01/04/2019"));
-    console.log("Premier lundi : ------- " + printDate(firstMonday) + " => " + ((printDate(firstMonday) == "Lundi 01/04/2019") ? "OK !" : "Lundi 01/04/2019"));
-})
-
+var today = Date.now();
 
 var ask_form = new Vue({
     el: '#ask_form',
     data: {
         visible: false,
         calendar: {
-            year: new Date(Date.now()).getFullYear(),
-            month: months[new Date(Date.now()).getMonth()],
-            days: []
+            year: new Date(today).getFullYear(),
+            month: months[new Date(today).getMonth()],
+            days: [],
+            selected: 0
+        },
+        form: {
+            discordID:"",
+            team_name:"",
+            time:"",
+            control_map:"",
+            hybrid_map:"",
+            assault_map:"",
+            escort_map:"",
         }
     },
     methods: {
+        selectDate: function(date){
+            if (date > Date.now()){
+
+                this.calendar.selected = date;
+            }
+        },
         submit: function(e){
             e.preventDefault();
         },
+    },
+    filters: {
+        date: function(time){
+            var date = new Date(time);
+            return (addZeros(date.getDate()) + "/" + addZeros(date.getMonth()+1))
+        }
     }
 });
 
-getMonthInfos(fevrier, function(firstDay, firstMonday){
+
+getMonthInfos(new Date(today), function(firstMonday){
     
     while (ask_form.calendar.days.length != 35){
         ask_form.calendar.days.push({
+            time: firstMonday.getTime(),
             date: firstMonday.getDate(),
             month: firstMonday.getMonth(),
-            outofmonth: (firstMonday.getMonth() != fevrier.getMonth()),
-            today: (firstMonday.getDate() == fevrier.getDate() && firstMonday.getMonth() == fevrier.getMonth()),
-            available: (firstMonday.getDate()*firstMonday.getMonth() > fevrier.getMonth()*fevrier.getDate()),
-            prefer: false,
+            outofmonth: (firstMonday.getMonth() != new Date(today).getMonth()),
+            today: (firstMonday.getDate() == new Date(today).getDate() && firstMonday.getMonth() == new Date(today).getMonth()),
+            available: (firstMonday.getDate()+30*firstMonday.getMonth() > new Date(today).getMonth()*30+new Date(today).getDate()),
+            prefer: (Math.random() > 0.5 && new Date(today).getMonth()*30+(new Date(today).getDate()+5) > firstMonday.getDate()+30*firstMonday.getMonth()),
         });
         addDay(1, firstMonday);
     }
 
 })
 
-
-function printDate(date = new Date()){
-    return ['.', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][date.getDay()] + " " + addZero(date.getDate()) + '/' + addZero(date.getMonth()+1) + '/' + date.getFullYear();
-}
-
-function addZero(number=0){return (new String(number).length<2) ? "0"+number : number;}
-function addDay(nbr=1, date=new Date()){date.setTime(date.getTime()+(nbr*86400000))}
+function addDay(nbr=1, date=new Date()){date.setTime(date.getTime()+(nbr*86400000));return date;}
+function addZeros(val){return(val<10)?'0'+val:val}
 
 $(function(){
     $(".body").fadeIn();
