@@ -1,0 +1,110 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--light2) !important;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width: 700px) { /* PC ONLY */
+  ::-webkit-scrollbar-button:vertical:decrement{height:86px;background-color:#FFF;}
+}
+
+@media screen and (max-width: 700px) {    
+    header>p {font-size: 0 !important;display: block !important;-webkit-user-drag: none;user-select: none;}
+    header .right {display: none !important;}
+    header svg {float: none !important;display: block;margin: 0 auto;}
+}
+
+@media screen and (max-width: 1050px) { /* MOBILE ONLY */
+    td {display:block}
+}
+
+
+.body *{
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+}
+
+header {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    background-color: white;
+    height: 86px;
+    z-index: 10;
+}
+
+header>p {
+    margin: 0px;
+    line-height: 85px;
+    height: 86px;
+    font-weight: 600;
+    font-size: 25px;
+    vertical-align: middle;
+    font-family: 'Roboto', sans-serif;
+    color: #009FA2;
+    display: inline-block;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+header svg {
+    width: 55px;
+    height: 65px;
+    padding-top: 18px;
+    padding-right: 15px;
+    padding-bottom: 2px;
+    padding-left: 15px;
+    float: left;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.container {
+    background-image: url(../images/bg.png);
+    background-color: var(--light1);
+}
+
+.calendar {
+    width: 640px;
+    height: 350px;
+    padding: 0;
+    display: grid;
+    grid: auto / auto auto auto auto auto auto auto;
+    list-style: none;
+    text-align: center;
+}
+
+.calendar>li:not(.title){
+    margin: 0 5px;
+    padding: 20px 0;
+    background-color: var(--main2);
+}
+
+.calendar>li.title{
+    margin: 0 5px;
+    padding: 10px 0;
+    font-weight: bold;
+    border-bottom: solid var(--main) 2px;
+}
+
+
+footer {
+    background-color: var(--light4);
+    padding: 15px 0;
+    text-align: center;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}

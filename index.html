@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <meta name="author" content="Mathieu Colmon (USP)"/>
+        <meta name="description" content="Overwatch team"/>
+        <meta name="keywords" content="Semi-Croustillants,semicroustillants,semi,croustillant,croustillants"/>
+        
+        <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
+        <meta name="theme-color" content="#F3AD43">
+        <meta name="msapplication-navbutton-color" content="#F3AD43">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#F3AD43">
+        
+        <title>Semi-Croustillants Overwatch Team</title>
+
+        <!-- <script>if (location.protocol != 'https:') location.href = 'https:' + window.location.href.substring(window.location.protocol.length);</script>
+
+        <link rel="shortcut icon" href="./favicon.ico"> -->
+
+        <link rel="stylesheet" href="./css/colors.css">
+        <link rel="stylesheet" href="./css/styles.css">
+        <link rel="stylesheet" href="./css/loading.css">
+        <link rel="stylesheet" href="./css/scrollbar.css">
+        <link rel="stylesheet" href="./css/styles.css">
+    
+    </head>
+
+    <body>
+
+        <div class="body" style="display:none">
+
+            <div id="ask_form" class="container">
+                <ul class="calendar">
+                    <li class="title">Mon</li>
+                    <li class="title">Tue</li>
+                    <li class="title">Wed</li>
+                    <li class="title">Thu</li>
+                    <li class="title">Fri</li>
+                    <li class="title">Sat</li>
+                    <li class="title">Sun</li>
+                    <li v-for="day in calendar.days">{{day}}</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <script src="./js/vue.min.js"></script>
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/socket.io.js"></script>
+        <script src="./index.js"></script>
+
+        <textarea id="clipboard" style="display: none;"></textarea>
+    </body>
+</html>
