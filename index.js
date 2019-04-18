@@ -57,11 +57,13 @@ var ask_form = new Vue({
         form: {
             discordID:"",
             team_name:"",
-            time:"X",
+            time:"",
             control_map:"",
             hybrid_map:"",
             assault_map:"",
             escort_map:"",
+
+            error: false
         }
     },
     methods: {
@@ -72,6 +74,32 @@ var ask_form = new Vue({
         },
         submit: function(e){
             e.preventDefault();
+
+            if (this.validDiscordID(this.form.discordID) && this.form.team_name.length>=3 && this.calendar.selected != 0){
+                var dateSelected = new Date(this.calendar.selected);
+                var form_data = {
+                    discordID: this.form.discordID,
+                    team_name: this.form.team_name,
+                    date: (addZeros(dateSelected.getDate()) + "/" + addZeros(dateSelected.getMonth()+1) + "/" + dateSelected.getFullYear())
+                }
+
+                if (this.form.time) form_data.time = this.form.time;
+                if (this.form.control_map || this.form.hybrid_map || this.form.assault_map || this.form.escort_map){
+                    form_data.map_control = this.form.control_map;
+                    form_data.map_hybrid  = this.form.hybrid_map;
+                    form_data.map_assault = this.form.assault_map;
+                    form_data.map_escort  = this.form.escort_map;
+                }
+
+                console.log(form_data)
+                $.post('https://cloud1.usp-3.fr:7532/send', form_data, function(rs){
+                    console.log(rs)
+                })
+                this.form.error = false;
+            }else{
+                this.form.error = true;
+            }
+
         },
         validDiscordID: function(discordID){
             if (discordID.length >= 7 && discordID.includes('#')){
@@ -125,19 +153,5 @@ $(function(){
             $(".body").fadeIn();
         })
     }, 500);
-
-    var scroll_pos = 0;
-
-    $(document).scroll(function() {
-        let new_scroll_pos = $(this).scrollTop()
-        const scrDown = (new_scroll_pos > scroll_pos);
-        scroll_pos = new_scroll_pos;
-        
-        if (scrDown){
-            $("header").css("top", "-86px");
-        }else{
-            $("header").css("top", "0");
-        }
-        
-    });
+    
 });

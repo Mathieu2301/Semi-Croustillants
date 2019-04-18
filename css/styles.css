@@ -5,13 +5,12 @@ html, body {
     font-size: 16px;
     margin: 0;
     padding: 0;
-    padding-top: 48px;
+    padding-top: 38px;
+    color: var(--dark2);
 }
 
 @media screen and (min-width: 1050px) { /* PC ONLY */
-  ::-webkit-scrollbar-button:vertical:decrement{height:86px;background-color:var(--dark-blue);}
-
-  .calendar_container>.calendar>li.day:not(.available):hover{
+    .calendar_container>.calendar>li.day:not(.available):hover{
         background-color: var(--main3-transparent);
         cursor: not-allowed;
     }
@@ -19,24 +18,22 @@ html, body {
     .calendar_container>.calendar>li.day.available:hover{
         background-color: var(--main1-transparent);
         cursor: pointer;
-    }    
-
+    }
 }
 
 @media screen and (max-width: 1050px) { /* MOBILE/TABLET ONLY */
     header>.right {display: none !important;}
     header>p {text-align:center !important;width: 100% !important;padding: 0 !important;}
     .calendar_container {
-        width: 100% !important;
+        width: calc(100% - 40px) !important;
         padding: 0 !important;
         margin-bottom: 70px !important;
     }
     .container.two-col {
-        grid: auto / 100% !important;
+        grid: 400px auto/ 100% !important;
     }
     .container {
-        margin: 0 !important;
-        height: auto !important;
+        height: 950px !important;
     }
 
     .right_form {
@@ -45,6 +42,13 @@ html, body {
 
     .profils_grid {
         grid-column-gap: 10px !important;
+    }
+
+    .body>div{
+        width: calc(100% - 50px) !important;
+    }
+    .container_title {
+        width: calc(100% - 200px) !important;
     }
 }
 
@@ -59,8 +63,7 @@ html, body {
     }
 
     .right_form {
-        margin: 0 !important;
-        width: calc(100% - 13px) !important;
+        width: calc(100% - 60px) !important;
     }
 
     .profils_grid {
@@ -68,6 +71,12 @@ html, body {
         grid-column-gap: 15px !important;
         grid-row-gap: 15px !important;
     }
+}
+
+.body>div{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
 }
 
 .body{
@@ -90,15 +99,15 @@ header {
     top: 0px;
     width: 100%;
     background-color: var(--dark-blue);
-    height: 86px;
+    height: 70px;
     z-index: 10;
-    box-shadow: 0px 10px var(--main);
+    box-shadow: 0px 6px var(--main);
 }
 
 header>p {
     margin: 0px;
-    line-height: 85px;
-    height: 86px;
+    line-height: 75px;
+    height: 70px;
     padding-left: 20px;
     font-weight: 600;
     font-size: 20px;
@@ -116,10 +125,9 @@ header>p {
 
 .container_title {
   display: block;
-  margin-left: 25px;
   margin-top: 25px;
   margin-bottom: 14px;
-  width: calc(100% - 50px);
+  width: calc(100% - 400px);
   font-size: 16px;
   font-weight: 700;
   border-bottom: 5px solid var(--main);
@@ -129,20 +137,15 @@ header>p {
     background-image: url(../images/bg.png);
     background-color: var(--light1);
     margin: 0 25px;
-    height: 500px;
-    padding: 15px;
+    height: 540px;
 }
 
 .container.two-col {
     display: grid;
-    grid: auto / 620px auto;
+    grid: auto / 580px auto;
 }
 
-.calendar_container {
-    height: 300px;
-    width: 580px;
-    padding: 5px;
-}
+.calendar_container {margin: 20px;}
 
 .calendar_container>.title {
     background-color: var(--light2);
@@ -153,7 +156,7 @@ header>p {
 
 .calendar_container>.calendar {
     width: 100%;
-    height: 100%;
+    height: 300px;
     margin: 0;
     padding: 0;
     display: grid;
@@ -186,7 +189,7 @@ header>p {
 }
 .calendar_container>.calendar>li.day.today {
     font-weight: bold;
-    box-shadow: inset 0px 0px 0px 1px var(--dark1);
+    box-shadow: inset 0px 0px 0px 1px var(--dark2);
 }
 .calendar_container>.calendar>li.day.outofmonth {
     color: var(--light4);
@@ -194,7 +197,13 @@ header>p {
 
 .right_form {
     margin: 0 auto;
-    width: 300px;
+    width: 80%;
+    padding-right: 12px;
+}
+
+span.required{
+    color: var(--main);
+    font-size: 20px;
 }
 
 .input>.name {
@@ -202,6 +211,7 @@ header>p {
 }
 
 .input>input[type="text"],
+.input>input[type="time"],
 .input>div.select {
     width: 100%;
     background-color: var(--light2);
@@ -213,9 +223,19 @@ header>p {
     font-size: 13px;
 }
 
-.input.valid>input,
-.input.valid>div.select{
+.input.required>input,
+.input.required>div.select{
   border-bottom: solid 1px var(--main);
+}
+
+.input.error>input,
+.input.error>div.select{
+  border-bottom: solid 1px var(--error);
+}
+
+.input.success>input,
+.input.success>div.select{
+  border-bottom: solid 1px var(--success);
 }
 
 .select>select {
@@ -264,7 +284,6 @@ header>p {
 }
 
 .profils_grid>.profil>img {
-    background-color: black;
     width: 100%;
     object-fit: cover;
 }

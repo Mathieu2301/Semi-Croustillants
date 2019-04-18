@@ -25,17 +25,3 @@
     -webkit-transform: perspective(120px) rotateY(-1800deg);
   }
 }
-@-webkit-keyframes loader_color_animation {
-  0%{color:var(--loader-c1)}
-  25%{color:var(--loader-c2)}
-  50%{color:var(--loader-c1)}
-  75%{color:var(--loader-c2)}
-  100%{color:var(--loader-c1)}
-}
-@keyframes loader_color_animation {
-  0%{color:var(--loader-c1)}
-  25%{color:var(--loader-c2)}
-  50%{color:var(--loader-c1)}
-  75%{color:var(--loader-c2)}
-  100%{color:var(--loader-c1)}
-}
