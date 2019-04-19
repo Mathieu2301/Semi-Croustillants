@@ -1,29 +1,19 @@
 html, body {
-    font-family: 'Roboto', sans-serif;
     background-color: var(--light2) !important;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     margin: 0;
     padding: 0;
-    padding-top: 38px;
+    padding-top: 30px;
     color: var(--dark2);
 }
 
 @media screen and (min-width: 1050px) { /* PC ONLY */
-    .calendar_container>.calendar>li.day:not(.available):hover{
-        background-color: var(--main3-transparent);
-        cursor: not-allowed;
-    }
-
-    .calendar_container>.calendar>li.day.available:hover{
-        background-color: var(--main1-transparent);
-        cursor: pointer;
-    }
+  footer {display:block !important}
 }
 
 @media screen and (max-width: 1050px) { /* MOBILE/TABLET ONLY */
     header>.right {display: none !important;}
-    header>p {text-align:center !important;width: 100% !important;padding: 0 !important;}
     .calendar_container {
         width: calc(100% - 40px) !important;
         padding: 0 !important;
@@ -41,7 +31,7 @@ html, body {
     }
 
     .profils_grid {
-        grid-column-gap: 10px !important;
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 
     .body>div{
@@ -53,6 +43,8 @@ html, body {
 }
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
+    header>p {text-align:center !important;width: 100% !important;padding: 0 !important;}
+    
     .calendar_container>.calendar>li.title {
         padding-bottom: 0 !important;
     }
@@ -89,7 +81,6 @@ html, body {
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    -webkit-touch-callout: none;
     -o-user-select: none;
     -moz-user-select: none;
 }
@@ -99,24 +90,23 @@ header {
     top: 0px;
     width: 100%;
     background-color: var(--dark-blue);
-    height: 70px;
+    height: 55px;
     z-index: 10;
     box-shadow: 0px 6px var(--main);
 }
 
 header>p {
     margin: 0px;
-    line-height: 75px;
-    height: 70px;
+    line-height: 58px;
+    height: 55px;
     padding-left: 20px;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 17px;
     vertical-align: middle;
     font-family: 'Roboto', sans-serif;
     color: var(--main);
     display: inline-block;
     -webkit-user-drag: none;
-    user-select: none;
 }
 
 .clickable {
@@ -179,16 +169,13 @@ header>p {
     background-color: var(--main2-transparent);
 }
 
-.calendar_container>.calendar>li.day.available:active,
-.calendar_container>.calendar>li.day.available.selected{
-    background-color: var(--main);
-}
-
 .calendar_container>.calendar>li.day.prefer {
     box-shadow: inset 0px 0px 0px 1px var(--main);
 }
 .calendar_container>.calendar>li.day.today {
     font-weight: bold;
+}
+.calendar_container>.calendar>li.day.prefer.today{
     box-shadow: inset 0px 0px 0px 1px var(--dark2);
 }
 .calendar_container>.calendar>li.day.outofmonth {
@@ -210,17 +197,29 @@ span.required{
     padding: 9px 0 0 5px;
 }
 
-.input>input[type="text"],
-.input>input[type="time"],
-.input>div.select {
+input[type="time"]{
+    font-family: "Roboto";
+    font-size: 16px;
+    padding: 2px 5px;
+}
+
+.input>div.select {background-color: var(--light2);}
+
+.input>input, .input>div.select>select {
     width: 100%;
     background-color: var(--light2);
     border: none;
     border-bottom: solid 1px var(--dark3);
     padding: 6px;
     border-radius: 3px 3px 0 0;
-    outline: none;
     font-size: 13px;
+    outline-color: var(--main);
+}
+
+.input>div.select>select {background-color:#0000}
+
+.input.small>input {
+    width: 40%;
 }
 
 .input.required>input,
@@ -240,13 +239,12 @@ span.required{
 
 .select>select {
   cursor: pointer;
-  background-color: var(--light2);
+  background-color: #0000;
   width: calc(100% - 28px);
   padding-left: 5px;
   border: none;
   -webkit-appearance: button;
   appearance: button;
-  outline: none;
 }
 
 .select>select>option{
@@ -254,6 +252,8 @@ span.required{
 }
 
 .select>svg {
+  margin-bottom: -28px;
+  padding: 7px;
   float: right;
   fill: #323D54;
 }
@@ -272,38 +272,74 @@ span.required{
   outline: none;
 }
 
-.submit_btn:hover {background-color: var(--main1-transparent);}
-
-.submit_btn:active {background-color: var(--light4);}
+.submit_btn:hover {background-color: var(--main4);}
 
 .profils_grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-column-gap: 25px;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
     margin: 0 25px;
 }
 
-.profils_grid>.profil>img {
+@media screen and (min-width: 600px) and (max-width: 1050px){
+  .profils_grid>.profil:nth-of-type(1){order:1}
+  .profils_grid>.profil:nth-of-type(2){order:4}
+  .profils_grid>.profil:nth-of-type(3){order:2}
+  .profils_grid>.profil:nth-of-type(4){order:5}
+  .profils_grid>.profil:nth-of-type(5){order:3}
+  .profils_grid>.profil:nth-of-type(6){order:6}
+}
+
+.profils_grid>.profil>.svg {
     width: 100%;
     object-fit: cover;
 }
 
-.profils_grid>.profil>p {
+.profils_grid>.profil>.name{
+    background-color: var(--light1);
+}
+
+.profils_grid>.profil>.name>p {
   margin: 0;
+  margin-right: 25px;
+  text-align: center;
   font-size: 15px;
   font-weight: 600;
-  height: 12px;
+  padding: 10px 0;
 }
 
-.profils_grid>.profil>p>img{
-    height: 11px;
+.profils_grid>.profil>.name>.svg{
+    fill: var(--dark-blue);
+    height: 17px;
+    float: left;
+    margin: 10px;
 }
+
+.profils_grid>.profil>.social{
+    background-color: var(--dark-blue);
+    height: 40px;
+    text-align: center;
+}
+
+.profils_grid>.profil>.social>.svg{
+    background-color: var(--dark-blue);
+    margin: 13px;
+    cursor: pointer;
+    height: 14px;
+    fill: var(--light1);
+}
+
+.profils_grid>.profil>.social>.svg:hover{fill:var(--main)}
 
 footer {
-    background-color: var(--light4);
+    display:none;
+    position: fixed;
+    bottom: 0;
+    background-color: var(--dark-blue);
     padding: 15px 0;
     text-align: center;
-    color: white;
+    color: var(--light4);
     width: 100%;
-    box-sizing: border-box;
 }
+footer>a {color: var(--main)}

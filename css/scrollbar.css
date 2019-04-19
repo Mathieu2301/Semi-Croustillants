@@ -2,4 +2,4 @@
 ::-webkit-scrollbar-thumb{background:var(--scrollbar);}
 ::-webkit-scrollbar:horizontal{height:6px;background:var(--dark-blue);}
 ::-webkit-scrollbar:vertical{height:6px;background:var(--dark-blue);}
-::-webkit-scrollbar-button:vertical:decrement{height:70px;background-color:var(--dark-blue);}
+::-webkit-scrollbar-button:vertical:decrement{height:55px;background-color:var(--dark-blue);}
