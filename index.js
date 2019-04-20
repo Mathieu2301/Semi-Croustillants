@@ -1,9 +1,6 @@
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var socket = io("ws://cloud1.usp-3.fr:7532/");
 
-function getMonthInfos(date, callback){
-    var firstMonday = new Date(date.getFullYear(), date.getMonth(), 1);
-    callback(addDay(1-firstMonday.getDay(), firstMonday))
-}
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 var today = Date.now();
 
@@ -131,7 +128,7 @@ var ask_form = new Vue({
 
                 var _this = this;
 
-                $.post('http://cloud1.usp-3.fr:7532/send', form_data, function(rs){
+                socket.emit('newScrimRequest', form_data, function(rs){
                     rs = JSON.parse(rs);
                     console.log(rs)
                     if (rs.success){
@@ -143,9 +140,12 @@ var ask_form = new Vue({
                         localStorage.setItem("discordID", _this.form.discordID)
                         localStorage.setItem("team_name", _this.form.team_name)
                     }else{
-                        _this.form.discordID = "";
                         izitoast_show("Error", rs.message, true)
-                        _this.form.error = true;
+
+                        if (rs.resetUser){
+                            _this.form.discordID = "";
+                            _this.form.error = true;
+                        }
                     }
                 })
             }else{
@@ -176,6 +176,21 @@ var ask_form = new Vue({
     }
 });
 
+socket.on("connect", function(){
+
+    socket.on("planning", function(days){
+        ask_form.calendar.days = days;
+    });
+
+    $(function(){
+        setTimeout(function(){
+            $(".loader").fadeOut(300, function(){
+                $(".body").fadeIn();
+            })
+        }, 500);
+    });
+
+})
 
 function izitoast_show(title, message, error=false){
     iziToast.show({
@@ -190,33 +205,9 @@ function izitoast_show(title, message, error=false){
     });
 }
 
-getMonthInfos(new Date(today), function(firstMonday){
-    ask_form.calendar.days = [];
-    while (ask_form.calendar.days.length != 42){
-        ask_form.calendar.days.push({
-            time: firstMonday.getTime(),
-            date: firstMonday.getDate(),
-            month: firstMonday.getMonth(),
-            outofmonth: (firstMonday.getMonth() != new Date(today).getMonth()),
-            today: (firstMonday.getDate() == new Date(today).getDate() && firstMonday.getMonth() == new Date(today).getMonth()),
-            prefer: (Math.random() > 0.4 && new Date(today).getMonth()*30+(new Date(today).getDate()+3) > firstMonday.getDate()+30*firstMonday.getMonth()),
-        });
-        addDay(1, firstMonday);
-    }
-
-})
-
-function addDay(nbr=1, date=new Date()){date.setTime(date.getTime()+(nbr*86400000));return date;}
 function addZeros(val){return(val<10)?'0'+val:val}
 
-$(function(){
-
-    setTimeout(function(){
-        $(".loader").fadeOut(300, function(){
-            $(".body").fadeIn();
-        })
-    }, 500);
-    
+$(function(){    
 
     jQuery('img.svg').each(function(){
         var $img = jQuery(this);

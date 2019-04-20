@@ -5,54 +5,37 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         
         <meta name="author" content="Mathieu Colmon (USP)"/>
-        <meta name="description" content="Overwatch team"/>
-        <meta name="keywords" content="Semi-Croustillants,semicroustillants,semi,croustillant,croustillants"/>
         
         <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" name="viewport">
         <meta name="theme-color" content="#F3AD43">
         <meta name="msapplication-navbutton-color" content="#F3AD43">
         <meta name="apple-mobile-web-app-status-bar-style" content="#F3AD43">
         
-        <title>Semi-Croustillants</title>
+        <title>Semi-Croustillants - Admin</title>
 
         <script>if (location.protocol == 'https:') location.href = 'http:' + window.location.href.substring(window.location.protocol.length);</script>
 
         <!-- <link rel="shortcut icon" href="./favicon.ico"> -->
 
-        <link rel="stylesheet" href="./css/colors.css">
-        <link rel="stylesheet" href="./css/styles.css">
-        <link rel="stylesheet" href="./css/loading.css">
-        <link rel="stylesheet" href="./css/scrollbar.css">
-        <link rel="stylesheet" href="./css/iziToast.min.css">
+        <link rel="stylesheet" href="../css/colors.css">
+        <link rel="stylesheet" href="../css/styles.css">
+        <link rel="stylesheet" href="../css/loading.css">
+        <link rel="stylesheet" href="../css/scrollbar.css">
+        <link rel="stylesheet" href="../css/iziToast.min.css">
     
     </head>
 
     <body>
-        <div class="loader"><img class="svg" src="./images/croustibot.svg"></div>
+        <div class="loader"><img class="svg" src="../images/croustibot.svg"></div>
 
         <div class="body" style="display:none">
 
             <header>
-                <p>SEMI-CROUSTILLANTS</p>
+                <p>SEMI-CROUSTILLANTS - ADMIN</p>
             </header>
 
-            <div class="container_title">MEET THE SEMI-CROUSTILLANTS</div>
-            <div id="profils_grid" class="profils_grid">
-                <div class="profil" v-for="profil in profils">
-                    <div class="name">
-                        <img class="svg" v-bind:src="'./images/' + profil.type + '.svg'" v-bind:alt="profil.type"/>
-                        <p>
-                            {{profil.name}}
-                        </p>
-                    </div>
-                    <div class="social">
-                        <img class="svg network" v-for="network in profil.social" v-bind:src="'./images/' + network.type + '.svg'" @click="openSocial(network)">
-                    </div>
-                </div>
-            </div>
-
-            <div class="container_title">ASK FOR A SCRIM</div>
-            <div id="ask_form" class="container two-col">
+            <div class="container_title">PLANNING</div>
+            <div id="planing_vue" class="container two-col">
                 <div class="calendar_container">
                     <div class="title">{{calendar.month}} {{calendar.year}}</div>
                     <ul class="calendar">
@@ -70,90 +53,15 @@
                         }">{{day.date}}</li>
                     </ul>
                 </div>
-                <div class="right_form">
-                    <div class="input required" v-bind:class="{ error: (form.error && !validDiscordID(form.discordID)), success: (form.error && validDiscordID(form.discordID)) }">
-                        <div class="name">DISCORD ID<span class="required">*</span></div>
-                        <input type="text" v-model="form.discordID" placeholder="ex: Beck#2309">
-                    </div>
-                    <div class="input required" v-bind:class="{ error: (form.error && form.team_name.length < 3), success: (form.error && form.team_name.length >= 3) }">
-                        <div class="name">TEAM NAME<span class="required">*</span></div>
-                        <input type="text" v-model="form.team_name" placeholder="ex: Les très croustillants">
-                    </div>
-                    <div class="input small required" v-bind:class="{ error: (form.error && (form.date=='' || calendar.min-86400000 > new Date(form.date).getTime())), success: (form.error && calendar.min <= new Date(form.date).getTime()) }">
-                        <div class="name">DATE<span class="required">*</span></div>
-                        <input type="date" v-model="form.date" v-bind:value="form.date | date" v-bind:min="calendar.min | date">
-                    </div>
-                    <div class="input small" v-bind:class="{ valid: form.time != '' }">
-                        <div class="name">TIME</div>
-                        <input type="time" v-model="form.time">
-                    <div class="input" v-bind:class="{ valid: form.control_map != 0 }">
-                        <div class="name">CONTROL MAP</div>
-                        <div class="select">
-                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
-                            <select v-model="form.control_map">
-                                <option value="none"></option>
-                                <option value="BUSAN">BUSAN</option>
-                                <option value="ILIOS">ILIOS</option>
-                                <option value="LIJANG TOWER">LIJANG TOWER</option>
-                                <option value="NEPAL">NEPAL</option>
-                                <option value="OASIS">OASIS</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input" v-bind:class="{ valid: form.hybrid_map != 0 }">
-                        <div class="name">HYBRID MAP</div>
-                        <div class="select">
-                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
-                            <select v-model="form.hybrid_map">
-                                <option value="none"></option>
-                                <option value="BLIZZARD WORLD">BLIZZARD WORLD</option>
-                                <option value="EICHENWALDE">EICHENWALDE</option>
-                                <option value="HOLLYWOOD">HOLLYWOOD</option>
-                                <option value="KING'S ROW">KING'S ROW</option>
-                                <option value="NUMBANI">NUMBANI</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input" v-bind:class="{ valid: form.assault_map != 0 }">
-                        <div class="name">ASSAULT MAP</div>
-                        <div class="select">
-                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
-                            <select v-model="form.assault_map">
-                                <option value="none"></option>
-                                <option value="HANAMURA">HANAMURA</option>
-                                <option value="HORIZON LUNAR COLONY">HORIZON LUNAR COLONY</option>
-                                <option value="PARIS">PARIS</option>
-                                <option value="TEMPLE OF ANUBIS">TEMPLE OF ANUBIS</option>
-                                <option value="VOLSKAYA INDUSTRIES">VOLSKAYA INDUSTRIES</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input" v-bind:class="{ valid: form.escort_map != 0 }">
-                        <div class="name">ESCORT MAP</div>
-                        <div class="select">
-                            <svg viewBox="0 0 33 16" height="13.5"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
-                            <select v-model="form.escort_map">
-                                <option value="none"></option>
-                                <option value="DORADO">DORADO</option>
-                                <option value="HAVANA">HAVANA</option>
-                                <option value="JUNKERTOWN">JUNKERTOWN</option>
-                                <option value="RIALTO">RIALTO</option>
-                                <option value="ROUTE 66">ROUTE 66</option>
-                                <option value="WATCHPOINT: GIBRALTAR">WATCHPOINT: GIBRALTAR</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="submit_btn" @click="submit">SEND</button>
-                </div>
             </div>
-            <footer>Made with ❤️ by Mathieu Colmon : <a class="link" href="https://usp-3.fr/cv">usp-3.fr/cv</a></footer>
         </div>
+        <!-- <footer>Made with ❤️ by Mathieu Colmon : <a class="link" href="https://usp-3.fr/cv">usp-3.fr/cv</a></footer> -->
 
-        <script src="./js/vue.min.js"></script>
-        <script src="./js/jquery.min.js"></script>
-        <script src="./js/socket.io.js"></script>
+        <script src="../js/vue.min.js"></script>
+        <script src="../js/jquery.min.js"></script>
+        <script src="../js/socket.io.js"></script>
         <script src="./index.js"></script>
-        <script src="./js/iziToast.min.js"></script>
+        <script src="../js/iziToast.min.js"></script>
 
         <textarea id="clipboard" style="display: none;"></textarea>
     </body>
