@@ -34,7 +34,7 @@ html, body {
         grid-template-columns: repeat(3, 1fr) !important;
     }
 
-    .body>div{
+    .body>div>div{
         width: calc(100% - 50px) !important;
     }
     .container_title {
@@ -65,7 +65,7 @@ html, body {
     }
 }
 
-.body>div{
+.body>div>div{
     margin-left: auto;
     margin-right: auto;
     width: 1000px;

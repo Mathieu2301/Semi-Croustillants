@@ -34,26 +34,43 @@
                 <p>SEMI-CROUSTILLANTS - ADMIN</p>
             </header>
 
-            <div class="container_title">PLANNING</div>
-            <div id="planing_vue" class="container two-col">
-                <div class="calendar_container">
-                    <div class="title">{{calendar.month}} {{calendar.year}}</div>
-                    <ul class="calendar">
-                        <li class="title">Mon</li>
-                        <li class="title">Tue</li>
-                        <li class="title">Wed</li>
-                        <li class="title">Thu</li>
-                        <li class="title">Fri</li>
-                        <li class="title">Sat</li>
-                        <li class="title">Sun</li>
-                        <li class="day" v-for="day in calendar.days" v-bind:class="{
-                            today: day.today,
-                            outofmonth: day.outofmonth,
-                            prefer: day.prefer
-                        }">{{day.date}}</li>
-                    </ul>
+            <div id="login_vue" v-if="code!=''">
+                <div class="container_title">LOGIN</div>
+                <div class="container">
+                    <h3 style="padding:30px">Pour autoriser la connexion, veuillez écrire "{{code}}" dans le channel du bot.</h3>
                 </div>
             </div>
+
+            <div id="planing_vue" v-if="visible">
+                <div class="container_title">PLANNING</div>
+                <div class="container two-col">
+                    <div class="calendar_container">
+                        <div class="title">{{calendar.month}} {{calendar.year}}</div>
+                        <ul class="calendar">
+                            <li class="title">Mon</li>
+                            <li class="title">Tue</li>
+                            <li class="title">Wed</li>
+                            <li class="title">Thu</li>
+                            <li class="title">Fri</li>
+                            <li class="title">Sat</li>
+                            <li class="title">Sun</li>
+                            <li class="day" v-for="day in calendar.days" v-bind:class="{
+                                today: day.today,
+                                outofmonth: day.outofmonth,
+                                prefer: day.prefer,
+                                selected: (calendar.selected == day)
+                            }" @click="calendar.selected=day">{{day.date}}</li>
+                        </ul>
+                    </div>
+                    <div class="right">
+                        Welcome {{ username }}
+                        <div v-if="calendar.selected != 0">
+                            <input type="checkbox" v-for="(dispo, player) in calendar.selected.dispo" v-bind:checked="dispo" @click="updateDisps(player, !dispo)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <!-- <footer>Made with ❤️ by Mathieu Colmon : <a class="link" href="https://usp-3.fr/cv">usp-3.fr/cv</a></footer> -->
 

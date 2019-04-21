@@ -1,11 +1,20 @@
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 var today = Date.now();
 
 var socket = io("ws://cloud1.usp-3.fr:7532/");
 
-var planning = new Vue({
+var login_vue = new Vue({
+    el: '#login_vue',
+    data: {
+        visible: false,
+        code: "",
+    }
+});
+
+var planing_vue = new Vue({
     el: '#planing_vue',
     data: {
+        visible: false,
         calendar: {
             year: new Date(today).getFullYear(),
             month: months[new Date(today).getMonth()],
@@ -27,8 +36,23 @@ var planning = new Vue({
 
 socket.on("connect", function(){
 
+    socket.emit("admin_panel_login", localStorage.getItem("username"), localStorage.getItem("auth"), function(rs){
+        localStorage.setItem("auth", rs.auth);
+        localStorage.setItem("username", rs.username);
+        planing_vue.username = rs.username;
+        planing_vue.visible = true;
+        login_vue.code = "";
+
+        
+    });
+
+    socket.on("admin_waiting_token", function(code){
+        planing_vue.visible = false;
+        login_vue.code = code;
+    })
+
     socket.on("planning", function(days){
-        planning.calendar.days = days;
+        planing_vue.calendar.days = days;
     });
 
     $(function(){
