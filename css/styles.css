@@ -169,11 +169,15 @@ header>p {
     background-color: var(--main2-transparent);
 }
 
+.calendar_container>.calendar>li.day.impossible {
+    background-color: var(--light2);
+}
 .calendar_container>.calendar>li.day.prefer {
     box-shadow: inset 0px 0px 0px 1px var(--main);
 }
 .calendar_container>.calendar>li.day.today {
     font-weight: bold;
+    border: dashed 1px var(--dark3);
 }
 .calendar_container>.calendar>li.day.prefer.today{
     box-shadow: inset 0px 0px 0px 1px var(--dark2);
