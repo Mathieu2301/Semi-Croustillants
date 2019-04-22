@@ -55,6 +55,7 @@
                             <li class="title">Sat</li>
                             <li class="title">Sun</li>
                             <li class="day" v-for="day in calendar.days" v-bind:class="{
+                                impossible: day.impossible,
                                 today: day.today,
                                 outofmonth: day.outofmonth,
                                 prefer: day.prefer,
