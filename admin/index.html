@@ -34,10 +34,18 @@
                 <p>SEMI-CROUSTILLANTS - ADMIN</p>
             </header>
 
-            <div id="login_vue" v-if="code!=''">
+            <div id="login_vue" class="small" v-if="visible">
                 <div class="container_title">LOGIN</div>
                 <div class="container">
-                    <h3 style="padding:30px">Pour autoriser la connexion, veuillez écrire "{{code}}" dans le channel du bot.</h3>
+                    <form @submit="login">
+                        <div class="input required">
+                            <div class="name" required>PASSWORD<span class="required">*</span></div>
+                            <input type="password" v-model="password">
+                        </div>
+                        <div class="input">
+                            <button class="submit_btn" @click="login">LOGIN</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -55,16 +63,17 @@
                             <li class="title">Sat</li>
                             <li class="title">Sun</li>
                             <li class="day" v-for="day in calendar.days" v-bind:class="{
+                                clickable: !day.impossible,
                                 impossible: day.impossible,
                                 today: day.today,
                                 outofmonth: day.outofmonth,
                                 prefer: day.prefer,
                                 selected: (calendar.selected == day)
-                            }" @click="calendar.selected=day">{{day.date}}</li>
+                            }" @click="selectDay(day)">{{day.date}}</li>
                         </ul>
                     </div>
                     <div class="right">
-                        Welcome {{ username }}
+                        
                         <div v-if="calendar.selected != 0">
                             <input type="checkbox" v-for="(dispo, player) in calendar.selected.dispo" v-bind:checked="dispo" @click="updateDisps(player, !dispo)">
                         </div>

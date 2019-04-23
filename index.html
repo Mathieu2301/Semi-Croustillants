@@ -57,6 +57,14 @@
                 <div class="container_title">ASK FOR A SCRIM</div>
                 <div id="ask_form" class="container two-col">
                     <div class="calendar_container">
+                        
+                        <div class="paragraph">
+                            <div class="title">Renseignez le formulaire, pour soumettre votre demande de scrim</div>
+                            <div class="text">
+                                Le calendrier des disponibilités vous aide dans le choix de sélection d’une date de scrim. Cependant, vous êtes libres de proposer n’importe quelle date. Une fois la demande soumise, vous serez recontacté par un manager, qui vous informera de l’acception ou du refus de votre demande.
+                            </div>
+                        </div>
+
                         <div class="title">{{calendar.month}} {{calendar.year}}</div>
                         <ul class="calendar">
                             <li class="title">Mon</li>
@@ -90,6 +98,7 @@
                         <div class="input small" v-bind:class="{ valid: form.time != '' }">
                             <div class="name">TIME</div>
                             <input type="time" v-model="form.time">
+                        </div>
                         <div class="input" v-bind:class="{ valid: form.control_map != 0 }">
                             <div class="name">CONTROL MAP</div>
                             <div class="select">

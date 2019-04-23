@@ -65,6 +65,17 @@ html, body {
     }
 }
 
+.body>div.small>.container {
+    min-width: 500px !important;
+    width: 30% !important;
+    height: initial !important;
+}
+
+.body>div.small>.container_title {
+    min-width: 500px !important;
+    width: 30% !important;
+}
+
 .body>div>div{
     margin-left: auto;
     margin-right: auto;
@@ -135,7 +146,7 @@ header>p {
     grid: auto / 580px auto;
 }
 
-.calendar_container {margin: 20px;}
+.calendar_container {margin: 20px}
 
 .calendar_container>.title {
     background-color: var(--light2);
@@ -175,10 +186,9 @@ header>p {
 .calendar_container>.calendar>li.day.prefer {
     box-shadow: inset 0px 0px 0px 1px var(--main);
 }
-.calendar_container>.calendar>li.day.today {
-    font-weight: bold;
-    border: dashed 1px var(--dark3);
-}
+.calendar_container>.calendar>li.day.today {font-weight:bold}
+.calendar_container>.calendar>li.day.today:not(.prefer) {border: dashed 1px var(--dark3);}
+
 .calendar_container>.calendar>li.day.prefer.today{
     box-shadow: inset 0px 0px 0px 1px var(--dark2);
 }
@@ -189,12 +199,15 @@ header>p {
 .right_form {
     margin: 0 auto;
     width: 80%;
-    padding-right: 12px;
 }
 
 span.required{
     color: var(--main);
     font-size: 20px;
+}
+
+form {
+  padding: 25px 50px 40px;
 }
 
 .input>.name {
@@ -205,6 +218,11 @@ input[type="time"]{
     font-family: "Roboto";
     font-size: 16px;
     padding: 2px 5px;
+}
+
+input[type="text"],
+input[type="password"]{
+    width: calc(100% - 12px) !important;
 }
 
 .input>div.select {background-color: var(--light2);}
@@ -263,7 +281,7 @@ input[type="time"]{
 }
 
 .submit_btn {
-  width: calc(100% + 12px);
+  width: 100%;
   padding: 9px;
   margin-top: 16px;
   border: none;
@@ -335,6 +353,12 @@ input[type="time"]{
 }
 
 .profils_grid>.profil>.social>.svg:hover{fill:var(--main)}
+
+.paragraph {margin-bottom:15px;}
+.paragraph>.title {
+    font-weight: bold;
+    margin-bottom:15px;
+}
 
 footer {
     display:none;

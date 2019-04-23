@@ -7,7 +7,25 @@ var login_vue = new Vue({
     el: '#login_vue',
     data: {
         visible: false,
-        code: "",
+        password: "",
+    },
+    methods: {
+        login: function(e){
+            e.preventDefault();
+            if (this.password.length >= 5){
+                socket.emit("admin_panel_login", {password: this.password}, function(rs){
+                    if (rs.result){
+                        localStorage.setItem("auth", rs.auth);
+                        planing_vue.visible = true;
+                        login_vue.visible = false;
+                        izitoast_show("Logged in", "You are logged in");
+                    }else{
+                        login_vue.visible = true;
+                        izitoast_show("Error", rs.message, true);
+                    }
+                });
+            }
+        }
     }
 });
 
@@ -24,7 +42,12 @@ var planing_vue = new Vue({
         }
     },
     methods: {
-        
+        selectDay: function(day){
+            if (!day.impossible){
+                this.calendar.selected = day;
+                socket.emit("setDispo", day.time, !day.prefer)
+            }
+        }
     },
     filters: {
         date: function(time){
@@ -35,21 +58,15 @@ var planing_vue = new Vue({
 });
 
 socket.on("connect", function(){
-
-    socket.emit("admin_panel_login", localStorage.getItem("username"), localStorage.getItem("auth"), function(rs){
-        localStorage.setItem("auth", rs.auth);
-        localStorage.setItem("username", rs.username);
-        planing_vue.username = rs.username;
-        planing_vue.visible = true;
-        login_vue.code = "";
-
-        
+    
+    socket.emit("admin_panel_login", {auth: localStorage.getItem("auth")}, function(rs){
+        if (rs.result){
+            localStorage.setItem("auth", rs.auth);
+            planing_vue.visible = true;
+        }else{
+            login_vue.visible = true;
+        }
     });
-
-    socket.on("admin_waiting_token", function(code){
-        planing_vue.visible = false;
-        login_vue.code = code;
-    })
 
     socket.on("planning", function(days){
         planing_vue.calendar.days = days;
