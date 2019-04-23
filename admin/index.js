@@ -3,6 +3,36 @@ var today = Date.now();
 
 var socket = io("ws://cloud1.usp-3.fr:7532/");
 
+
+var header_vue = new Vue({
+    el: '#header_vue',
+    data: {
+        connected: false,
+        MenuOpened: false
+    },
+    methods: {
+        toggleMenu: function(){
+            if (!this.MenuOpened){
+                $("header>.right").addClass("opened")
+                this.MenuOpened = true;
+            }else{
+                $("header>.right").removeClass("opened")
+                this.MenuOpened = false;
+            }
+        },
+        openConfig: function(){
+            if (!login_vue.visible){
+                planing_vue.visible = false;
+                config_vue.visible = true;
+            }
+        },
+        disconnect: function(){
+            localStorage.removeItem("auth");
+            reloadApp();
+        }
+    }
+});
+
 var login_vue = new Vue({
     el: '#login_vue',
     data: {
@@ -18,6 +48,7 @@ var login_vue = new Vue({
                         localStorage.setItem("auth", rs.auth);
                         planing_vue.visible = true;
                         login_vue.visible = false;
+                        header_vue.connected = true;
                         izitoast_show("Logged in", "You are logged in");
                     }else{
                         login_vue.visible = true;
@@ -97,6 +128,7 @@ socket.on("connect", function(){
         if (rs.result){
             localStorage.setItem("auth", rs.auth);
             planing_vue.visible = true;
+            header_vue.connected = true;
         }else{
             login_vue.visible = true;
         }
@@ -136,38 +168,21 @@ function izitoast_show(title, message, error=false){
 
 function addZeros(val){return(val<10)?'0'+val:val}
 
-$(function(){
+function reloadApp(){
+    $(".body").fadeOut(100, function(){
+        $(".loader").fadeIn();
+        setTimeout(()=> location.reload(), 500)
+    })
+}
 
-    var headerMenuOpened = false;
-    var headerMenuBtn = $("header>.right");
-    var headerMenu = $("header>.right>.menu");
-    headerMenuBtn.on("click", toggleHeaderMenu);
+$(function(){
 
     window.onclick = function(event) {
         if (!event.target.matches("header>.right *")) {
-            headerMenuBtn.removeClass("opened")
-            headerMenuOpened = false;
+            $("header>.right").removeClass("opened")
+            header_vue.MenuOpened = false;
         }
     }
-
-    function toggleHeaderMenu(){
-        if (!headerMenuOpened){
-            headerMenuBtn.addClass("opened")
-            headerMenuOpened = true;
-        }else{
-            headerMenuBtn.removeClass("opened")
-            headerMenuOpened = false;
-        }
-    }
-
-    $("#open_config").on("click", function(){
-        if (!login_vue.visible){
-            planing_vue.visible = false;
-            config_vue.visible = true;
-        }
-    })
-
-    $("#disconnect").on("click", disconnect)
 
     jQuery('img.svg').each(function(){
         var $img = jQuery(this);
@@ -191,5 +206,4 @@ $(function(){
             $img.replaceWith($svg);
         }, 'xml');
     });
-
 });

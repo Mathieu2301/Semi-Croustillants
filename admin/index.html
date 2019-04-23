@@ -30,14 +30,14 @@
 
         <div class="body" style="display:none">
 
-            <header>
+            <header id="header_vue">
                 <p>SEMI-CROUSTILLANTS - ADMIN</p>
-                <div class="right">
+                <div class="right" @click="toggleMenu" v-if="connected">
                     <div class="username">Admin</div>
                     <svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
                     <div class="menu">
-                        <li id="open_config">Config</li>
-                        <li id="disconnect">Disconnect</li>
+                        <li @click="openConfig">Config</li>
+                        <li @click="disconnect">Disconnect</li>
                     </div>
                 </div>
             </header>
