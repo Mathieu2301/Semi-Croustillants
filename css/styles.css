@@ -40,6 +40,7 @@ html, body {
 }
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
+    .hide_when_small_screen{display:none}
     header>p {text-align:center !important;width: 100% !important;padding: 0 !important;}
     
     .container_part>.calendar>li.title {
@@ -155,10 +156,11 @@ header>.right.opened>.menu>li:hover {
     background-color: var(--dark3);
 }
 
-
 .clickable {
     cursor: pointer;
 }
+
+.margin_left{margin-left:15px}
 
 .container_title {
   display: block;
@@ -417,18 +419,18 @@ input[type="password"]{
 }
 
 .table{
+    width:100%;
     padding-top: 15px;
-    width: 100%;
     -webkit-border-horizontal-spacing: 0px;
     /* -webkit-border-vertical-spacing: 0px; */
 }
 
-.table tr:first-child{
+.table tr.head{
     background-color: var(--main);
 }
 
 .table tr{
-    height: 31px;
+    height: 35px;
     background-color: var(--main1-transparent);
 }
 
@@ -458,7 +460,8 @@ input[type="password"]{
 }
 
 .table tr>td.up:hover,
-.table tr>td.down:hover{
+.table tr>td.down:hover,
+.table tr>td.clickable:hover{
     background-color: var(--main);
 }
 

@@ -90,32 +90,47 @@ var planing_vue = new Vue({
             }
         },
         contact: function(discordID){
-            $('#clipboard').text(discordID);
-            var $temp=$("<input>");
-            $("body").append($temp);
-            $temp.val($('#clipboard').text()).select();
-            document.execCommand("copy");
-            $temp.remove();
-            $('#clipboard').text("")
-            izitoast_show("Done", "Discord ID copied : " + discordID);
+
+            socket.emit("admin_addFriend", discordID, function(result){
+                if (result.result){
+                    location.href = "discord://discordapp.com/channels/@me/" + result.DM;
+                }else{
+                    $('#clipboard').text(discordID);
+                    var $temp=$("<input>");
+                    $("body").append($temp);
+                    $temp.val($('#clipboard').text()).select();
+                    document.execCommand("copy");
+                    $temp.remove();
+                    $('#clipboard').text("")
+                    izitoast_show("Done", "Discord ID copied : " + discordID);
+                }
+            })
+
         },
         accept: function(request_uid){
-            if (Object.keys(this.scrims).filter(v=>this.scrims[v].date==this.requests[request_uid].date).length == 0){
+            if (!this.scrims || Object.keys(this.scrims).filter(v=>this.scrims[v].date==this.requests[request_uid].date).length == 0){
                 socket.emit("admin_accept_request", request_uid);
             }else{
                 var replaced = planing_vue.scrims[Object.keys(this.scrims).filter(v=>this.scrims[v].date==this.requests[request_uid].date)[0]];
-                if (confirm("If you accept this request, the scrim of the " + replaced.date + " will be cancelled.")){
-                    socket.emit("admin_accept_request", request_uid);
-                    this.contact(replaced.user);
-                    izitoast_show("The scrim has been deleted", "You have to contact " + replaced.user + " to tell him.");
-                }
+                izitoast_confirm("Are you sure you want to do that ?", "If you accept this request, the scrim of the " + replaced.date + " will be cancelled. You will have to contact " + replaced.user + " to tell him.", function(rs){
+                    if (rs){
+                        socket.emit("admin_accept_request", request_uid);
+                        planing_vue.contact(replaced.user);
+                    }
+                })
             }
         },
         ignore: function(request_uid){
             socket.emit("admin_ignore_request", request_uid);
         },
         delete_scrim: function(scrim_date){
-            if (confirm("Are you sure you want to delete the scrim of the " + scrim_date)) socket.emit("admin_delete_scrim", scrim_date);
+            var scrim = planing_vue.scrims[scrim_date];
+            izitoast_confirm("Are you sure you want to delete the scrim of the " + scrim.date + " ?", "You will have to contact " + scrim.user + " to tell him.", function(rs){
+                if (rs){
+                    socket.emit("admin_delete_scrim", scrim_date);
+                    planing_vue.contact(replaced.user);
+                }
+            })
         }
     },
     filters: {
@@ -132,7 +147,9 @@ var config_vue = new Vue({
         visible: false,
         streams: [],
         streamName: "",
-        onlinestream: ""
+        onlinestream: "",
+        maxRequestPerIP: 3,
+        managerDiscordAUTH: "",
     },
     methods: {
         selectDay: function(day){
@@ -167,6 +184,18 @@ var config_vue = new Vue({
                 this.streams[index] = s2;
                 socket.emit("admin_edit_streams", this.streams);
             }
+        },
+        update_managerDiscordAUTH: function(){
+            socket.emit("admin_edit_managerDiscordAUTH", this.managerDiscordAUTH, function(rs){
+                izitoast_show(((!rs.error) ? "Done !" : "Error !"), rs.message, rs.error);
+            })
+            
+        },
+        update_maxRequestPerIP: function(){
+            if (this.maxRequestPerIP > 0){
+                socket.emit("admin_edit_maxRequestPerIP", this.maxRequestPerIP);
+                izitoast_show("Done !", "'maxRequestPerIP' has been set to " + this.maxRequestPerIP);
+            }
         }
     },
     filters: {
@@ -188,6 +217,7 @@ socket.on("connect", function(){
             login_vue.visible = true;
         }
 
+        socket.on("admin_update_maxRequestPerIP", nbr => config_vue.maxRequestPerIP = nbr);
         socket.on("admin_update_streams", list => config_vue.streams = list);
         socket.on("admin_update_requests", list => planing_vue.requests = list);
         socket.on("admin_update_scrims", list => planing_vue.scrims = list);
@@ -222,6 +252,38 @@ function izitoast_show(title, message, error=false){
         layout: 2,
     });
 }
+
+function izitoast_confirm(title, question, callback){
+    iziToast.show({
+        theme: 'dark',
+        overlay: true,
+        title: title,
+        message: question,
+        position: 'center',
+        progressBarColor: '#F3AD43',
+        backgroundColor: "#181B2C",
+        image: '../images/logo2.png',
+        imageWidth: 70,
+        layout: 2,
+
+        buttons: [
+            ['<button>Ok</button>', function (instance, toast) {
+                instance.hide({
+                    transitionOut: 'fadeOutUp',
+                }, toast, 'buttonName');
+                callback(true);
+            }, true],
+            ['<button>Close</button>', function (instance, toast) {
+                instance.hide({
+                    transitionOut: 'fadeOutUp',
+                }, toast, 'buttonName');
+                callback(false);
+            }]
+        ],
+        onClosing: ()=>callback(false)    
+    });
+}
+
 
 function addZeros(val){return(val<10)?'0'+val:val}
 

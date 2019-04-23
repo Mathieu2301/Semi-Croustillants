@@ -84,15 +84,15 @@
                     <div class="container_part">
                         <div class="title">Requests</div>
                         <table class="table" v-if='requests && requests.length != 0'>
-                            <tr>
+                            <tr class="head">
                                 <th>Date</th>
                                 <th>Team</th>
-                                <th>Hour</th>
+                                <th class="hide_when_small_screen">Hour</th>
 
-                                <th>Assault</th>
-                                <th>Control</th>
-                                <th>Escort</th>
-                                <th>Hybrid</th>
+                                <th class="hide_when_small_screen">Assault</th>
+                                <th class="hide_when_small_screen">Control</th>
+                                <th class="hide_when_small_screen">Escort</th>
+                                <th class="hide_when_small_screen">Hybrid</th>
 
                                 <th></th> <!-- Contact -->
                                 <th></th> <!-- Accept -->
@@ -102,12 +102,12 @@
                             <tr v-for="(request, request_uid) in requests" v-if="request">
                                 <td>{{ request.date }}</td>
                                 <td>{{ request.team }}</td>
-                                <td>{{ request.time || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ request.time || '--' }}</td>
 
-                                <td>{{ request.maps.assault || '--' }}</td>
-                                <td>{{ request.maps.control || '--' }}</td>
-                                <td>{{ request.maps.escort  || '--' }}</td>
-                                <td>{{ request.maps.hybrid  || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ request.maps.assault || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ request.maps.control || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ request.maps.escort  || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ request.maps.hybrid  || '--' }}</td>
 
 
                                 <td class="center clickable" @click="contact(request.user)">💬</td>
@@ -121,15 +121,15 @@
                     <div class="container_part">
                         <div class="title">Scrims</div>
                         <table class="table" v-if='scrims && scrims.length != 0'>
-                            <tr>
+                            <tr class="head">
                                 <th>Date</th>
                                 <th>Team</th>
                                 <th>Hour</th>
 
-                                <th>Assault</th>
-                                <th>Control</th>
-                                <th>Escort</th>
-                                <th>Hybrid</th>
+                                <th class="hide_when_small_screen">Assault</th>
+                                <th class="hide_when_small_screen">Control</th>
+                                <th class="hide_when_small_screen">Escort</th>
+                                <th class="hide_when_small_screen">Hybrid</th>
 
                                 <th></th> <!-- Contact -->
                                 <th></th> <!-- Delete -->
@@ -140,10 +140,10 @@
                                 <td>{{ scrim.team }}</td>
                                 <td>{{ scrim.time || '--' }}</td>
 
-                                <td>{{ scrim.maps.assault || '--' }}</td>
-                                <td>{{ scrim.maps.control || '--' }}</td>
-                                <td>{{ scrim.maps.escort  || '--' }}</td>
-                                <td>{{ scrim.maps.hybrid  || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ scrim.maps.assault || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ scrim.maps.control || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ scrim.maps.escort  || '--' }}</td>
+                                <td class="hide_when_small_screen">{{ scrim.maps.hybrid  || '--' }}</td>
 
                                 <td class="center clickable" @click="contact(scrim.user)">💬</td>
                                 <td class="center clickable" @click="delete_scrim(date)">❌</td>
@@ -159,33 +159,53 @@
             <div id="config_vue" v-if="visible">
                 <div class="container_title">CONFIG</div>
                 <div class="container two-col">
-                    <table class="table">
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>Stream</th>
-                            <th>Del</th>
-                        </tr>
+                    <div class="container_part">
+                        <div class="title">Config</div>
 
-                        <tr v-for="(stream, index) in streams" v-if="stream">
-                            <td class="online" v-if="stream == onlinestream"><div class="online_icon"></div></td>
-                            <td v-else></td>
-                            <td class="up" @click="pushUp(index)"><svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg></td>
-                            <td class="down" @click="pushDown(index)"><svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg></td>
-                            <td class="center"><a v-bind:href="'https://twitch.tv/'+ stream" target="blank">{{ stream }}</a></td>
-                            <td class="center clickable" @click="removeStream(index)"><span>❌</span></td>
-                        </tr>
+                        <table class="table">
+                            <tr>
+                                <td>Max request per IP</td>
+                                <td><input type="number" v-model="maxRequestPerIP"></td>
+                                <td class="clickable" @click="update_maxRequestPerIP">Update</td>
+                            </tr>
+                            <tr>
+                                <td>Manager's Discord AUTH</td>
+                                <td><input type="password" v-model="managerDiscordAUTH"></td>
+                                <td class="clickable" @click="update_managerDiscordAUTH">Update</td>
+                            </tr>
+                        </table>
 
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><input type="text" v-model="streamName"></td>
-                            <td class="center clickable" @click="addStream">➕</td>
-                        </tr>
-
-                    </table>
+                    </div>
+                    <div class="container_part">
+                        <div class="title">Streams</div>
+                        <table class="table">
+                            <tr class="head">
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>Stream</th>
+                                <th></th>
+                            </tr>
+        
+                            <tr v-for="(stream, index) in streams" v-if="stream">
+                                <td class="online" v-if="stream == onlinestream"><div class="online_icon"></div></td>
+                                <td v-else></td>
+                                <td class="up" @click="pushUp(index)"><svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg></td>
+                                <td class="down" @click="pushDown(index)"><svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg></td>
+                                <td class="center"><a v-bind:href="'https://twitch.tv/'+ stream" target="blank">{{ stream }}</a></td>
+                                <td class="center clickable" @click="removeStream(index)"><span>❌</span></td>
+                            </tr>
+        
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" v-model="streamName"></td>
+                                <td class="center clickable" @click="addStream">➕</td>
+                            </tr>
+        
+                        </table>
+                    </div>
                 </div>
             </div>
             
