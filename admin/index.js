@@ -20,6 +20,12 @@ var header_vue = new Vue({
                 this.MenuOpened = false;
             }
         },
+        openPlanning: function(){
+            if (!login_vue.visible){
+                planing_vue.visible = true;
+                config_vue.visible = false;
+            }
+        },
         openConfig: function(){
             if (!login_vue.visible){
                 planing_vue.visible = false;
@@ -38,6 +44,7 @@ var login_vue = new Vue({
     data: {
         visible: false,
         password: "",
+        wrongpassword: "@@@@@@@@@"
     },
     methods: {
         login: function(e){
@@ -51,6 +58,7 @@ var login_vue = new Vue({
                         header_vue.connected = true;
                         izitoast_show("Logged in", "You are logged in");
                     }else{
+                        login_vue.wrongpassword = login_vue.password;
                         login_vue.visible = true;
                         izitoast_show("Error", rs.message, true);
                     }
@@ -70,7 +78,9 @@ var planing_vue = new Vue({
             days: [],
             selected: 0,
             min: today,
-        }
+        },
+        requests: {},
+        scrims: {}
     },
     methods: {
         selectDay: function(day){
@@ -78,6 +88,34 @@ var planing_vue = new Vue({
                 this.calendar.selected = day;
                 socket.emit("admin_edit_dispos", day.time, !day.prefer)
             }
+        },
+        contact: function(discordID){
+            $('#clipboard').text(discordID);
+            var $temp=$("<input>");
+            $("body").append($temp);
+            $temp.val($('#clipboard').text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+            $('#clipboard').text("")
+            izitoast_show("Done", "Discord ID copied : " + discordID);
+        },
+        accept: function(request_uid){
+            if (Object.keys(this.scrims).filter(v=>this.scrims[v].date==this.requests[request_uid].date).length == 0){
+                socket.emit("admin_accept_request", request_uid);
+            }else{
+                var replaced = planing_vue.scrims[Object.keys(this.scrims).filter(v=>this.scrims[v].date==this.requests[request_uid].date)[0]];
+                if (confirm("If you accept this request, the scrim of the " + replaced.date + " will be cancelled.")){
+                    socket.emit("admin_accept_request", request_uid);
+                    this.contact(replaced.user);
+                    izitoast_show("The scrim has been deleted", "You have to contact " + replaced.user + " to tell him.");
+                }
+            }
+        },
+        ignore: function(request_uid){
+            socket.emit("admin_ignore_request", request_uid);
+        },
+        delete_scrim: function(scrim_date){
+            if (confirm("Are you sure you want to delete the scrim of the " + scrim_date)) socket.emit("admin_delete_scrim", scrim_date);
         }
     },
     filters: {
@@ -93,7 +131,8 @@ var config_vue = new Vue({
     data: {
         visible: false,
         streams: [],
-        streamName: ""
+        streamName: "",
+        onlinestream: ""
     },
     methods: {
         selectDay: function(day){
@@ -111,6 +150,22 @@ var config_vue = new Vue({
                 this.streams.push(this.streamName)
                 socket.emit("admin_edit_streams", this.streams);
                 this.streamName = "";
+            }
+        },
+        pushUp: function(index){
+            if (this.streams[index] && this.streams[index-1]){
+                let s2 = this.streams[index-1];
+                this.streams[index-1] = this.streams[index];
+                this.streams[index] = s2;
+                socket.emit("admin_edit_streams", this.streams);
+            }
+        },
+        pushDown: function(index){
+            if (this.streams[index] && this.streams[index+1]){
+                let s2 = this.streams[index+1];
+                this.streams[index+1] = this.streams[index];
+                this.streams[index] = s2;
+                socket.emit("admin_edit_streams", this.streams);
             }
         }
     },
@@ -133,10 +188,12 @@ socket.on("connect", function(){
             login_vue.visible = true;
         }
 
-        socket.on("admin_update_streams", function(list){
-            config_vue.streams = list;
-        })
+        socket.on("admin_update_streams", list => config_vue.streams = list);
+        socket.on("admin_update_requests", list => planing_vue.requests = list);
+        socket.on("admin_update_scrims", list => planing_vue.scrims = list);
     });
+
+    socket.on("stream_change", channel => config_vue.onlinestream = channel);
 
     socket.on("planning", function(days){
         planing_vue.calendar.days = days;
@@ -160,7 +217,7 @@ function izitoast_show(title, message, error=false){
         message: message,
         backgroundColor: (!error) ? "#181B2C" : "#c74343",
         progressBarColor: '#F3AD43',
-        image: 'images/logo2.png',
+        image: '../images/logo2.png',
         imageWidth: 70,
         layout: 2,
     });
