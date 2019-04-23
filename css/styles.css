@@ -120,6 +120,45 @@ header>p {
     -webkit-user-drag: none;
 }
 
+header>.right{
+    float: right;
+    color: var(--light2);
+    fill: var(--light2);
+    height: 55px;
+    width: 90px;
+    display: flex;
+    cursor: pointer;
+}
+
+header>.right>.username{
+    padding: 20px 5px;
+}
+
+header>.right>svg{
+    height: 9px;
+    padding: 24px 4px;
+}
+
+header>.right.opened>svg{transform: rotate(-540deg);}
+header>.right>.menu{
+    height: 0;
+    position: absolute;
+    top: 61px;
+    right: 0px;
+    list-style: none;
+    background-color: var(--dark2);
+}
+header>.right.opened>.menu{height:initial}
+
+header>.right.opened>.menu>li {
+    padding: 12px 20px;
+}
+
+header>.right.opened>.menu>li:hover {
+    background-color: var(--dark3);
+}
+
+
 .clickable {
     cursor: pointer;
 }
@@ -359,6 +398,53 @@ input[type="password"]{
     font-weight: bold;
     margin-bottom:15px;
 }
+
+.list{
+    list-style: none;
+    padding: 15px;
+}
+
+.list>li{
+    background-color: var(--light3);
+    padding: 10px;
+}
+
+.list>li:nth-child(2n){
+    background-color: var(--main1-transparent);
+}
+
+.table{
+    padding: 15px;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table tr:first-child{
+    background-color: var(--main);
+}
+
+.table tr{
+    height: 31px;
+    background-color: var(--main1-transparent);
+}
+
+.table td:not(.center){
+    padding-left: 10px;
+}
+
+.table td.center{
+    text-align: center;
+}
+
+.table td.clickable:hover{
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.table tr:nth-child(2n){
+    background-color: var(--light3);
+}
+
 
 footer {
     display:none;

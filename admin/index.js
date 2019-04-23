@@ -45,7 +45,41 @@ var planing_vue = new Vue({
         selectDay: function(day){
             if (!day.impossible){
                 this.calendar.selected = day;
-                socket.emit("setDispo", day.time, !day.prefer)
+                socket.emit("admin_edit_dispos", day.time, !day.prefer)
+            }
+        }
+    },
+    filters: {
+        date: function(time){
+            var date = new Date(time);
+            return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()))
+        }
+    }
+});
+
+var config_vue = new Vue({
+    el: '#config_vue',
+    data: {
+        visible: false,
+        streams: [],
+        streamName: ""
+    },
+    methods: {
+        selectDay: function(day){
+            if (!day.impossible){
+                this.calendar.selected = day;
+                socket.emit("admin_edit_dispos", day.time, !day.prefer)
+            }
+        },
+        removeStream: function(index){
+            delete this.streams[index];
+            socket.emit("admin_edit_streams", this.streams);
+        },
+        addStream: function(){
+            if (this.streamName != ""){
+                this.streams.push(this.streamName)
+                socket.emit("admin_edit_streams", this.streams);
+                this.streamName = "";
             }
         }
     },
@@ -66,6 +100,10 @@ socket.on("connect", function(){
         }else{
             login_vue.visible = true;
         }
+
+        socket.on("admin_update_streams", function(list){
+            config_vue.streams = list;
+        })
     });
 
     socket.on("planning", function(days){
@@ -99,6 +137,37 @@ function izitoast_show(title, message, error=false){
 function addZeros(val){return(val<10)?'0'+val:val}
 
 $(function(){
+
+    var headerMenuOpened = false;
+    var headerMenuBtn = $("header>.right");
+    var headerMenu = $("header>.right>.menu");
+    headerMenuBtn.on("click", toggleHeaderMenu);
+
+    window.onclick = function(event) {
+        if (!event.target.matches("header>.right *")) {
+            headerMenuBtn.removeClass("opened")
+            headerMenuOpened = false;
+        }
+    }
+
+    function toggleHeaderMenu(){
+        if (!headerMenuOpened){
+            headerMenuBtn.addClass("opened")
+            headerMenuOpened = true;
+        }else{
+            headerMenuBtn.removeClass("opened")
+            headerMenuOpened = false;
+        }
+    }
+
+    $("#open_config").on("click", function(){
+        if (!login_vue.visible){
+            planing_vue.visible = false;
+            config_vue.visible = true;
+        }
+    })
+
+    $("#disconnect").on("click", disconnect)
 
     jQuery('img.svg').each(function(){
         var $img = jQuery(this);
