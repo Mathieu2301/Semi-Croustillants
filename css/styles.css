@@ -20,10 +20,7 @@ html, body {
         margin-bottom: 70px !important;
     }
     .container.two-col {
-        grid: 400px auto/ 100% !important;
-    }
-    .container {
-        height: 950px !important;
+        grid: auto auto/ 100% !important;
     }
 
     .right_form {
@@ -177,12 +174,12 @@ header>.right.opened>.menu>li:hover {
     background-image: url(../images/bg.png);
     background-color: var(--light1);
     margin: 0 25px;
-    height: 540px;
 }
 
 .container.two-col {
     display: grid;
     grid: auto / 580px auto;
+    padding-bottom: 20px;
 }
 
 .calendar_container {margin: 20px}
