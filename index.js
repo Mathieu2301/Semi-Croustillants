@@ -97,6 +97,7 @@ var ask_form = new Vue({
             team_name: localStorage.getItem("team_name"),
             date:"",
             time:"",
+            maps: {},
             control_map:"",
             hybrid_map:"",
             assault_map:"",
@@ -172,6 +173,11 @@ var ask_form = new Vue({
         date: function(time){
             var date = new Date(time);
             return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()))
+        },
+        short: function(text){
+            if (text.length > 9){
+                return text.slice(0, 8) + "..."
+            }else return text;
         }
     }
 });
@@ -180,6 +186,14 @@ socket.on("connect", function(){
 
     socket.on("planning", function(days){
         ask_form.calendar.days = days;
+    });
+
+    socket.on("planning", function(days){
+        ask_form.calendar.days = days;
+    });
+
+    socket.on("maps", maps =>{
+        ask_form.maps = maps;
     });
 
     $(function(){

@@ -13,10 +13,14 @@ var header_vue = new Vue({
     methods: {
         toggleMenu: function(){
             if (!this.MenuOpened){
-                $("header>.right").addClass("opened")
+                $("header>.right>.menu").show();
+                setTimeout(()=> $("header>.right").addClass("opened"), 20);
                 this.MenuOpened = true;
             }else{
                 $("header>.right").removeClass("opened")
+                setTimeout(function(){
+                    $("header>.right>.menu").hide();
+                }, 300)
                 this.MenuOpened = false;
             }
         },
@@ -93,6 +97,7 @@ var planing_vue = new Vue({
 
             socket.emit("admin_addFriend", discordID, function(result){
                 if (result.result){
+                    izitoast_show("Done", "Opening discussion with " + discordID + " on Discord");
                     location.href = "discord://discordapp.com/channels/@me/" + result.DM;
                 }else{
                     $('#clipboard').text(discordID);
@@ -128,15 +133,23 @@ var planing_vue = new Vue({
             izitoast_confirm("Are you sure you want to delete the scrim of the " + scrim.date + " ?", "You will have to contact " + scrim.user + " to tell him.", function(rs){
                 if (rs){
                     socket.emit("admin_delete_scrim", scrim_date);
-                    planing_vue.contact(replaced.user);
+                    planing_vue.contact(scrim.user);
                 }
             })
+        },
+        updateScrim: function(date, scrim){
+            socket.emit("admin_update_scrim", date, scrim);
         }
     },
     filters: {
         date: function(time){
             var date = new Date(time);
             return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()))
+        },
+        short: function(text){
+            if (text.length > 15){
+                return text.slice(0, 16) + "..."
+            }else return text;
         }
     }
 });
@@ -150,6 +163,10 @@ var config_vue = new Vue({
         onlinestream: "",
         maxRequestPerIP: 3,
         managerDiscordAUTH: "",
+
+        maps: {},
+        mapname: "",
+        maptype: "",
     },
     methods: {
         selectDay: function(day){
@@ -167,6 +184,15 @@ var config_vue = new Vue({
                 this.streams.push(this.streamName)
                 socket.emit("admin_edit_streams", this.streams);
                 this.streamName = "";
+            }
+        },
+        removeMap: function(type, UID){
+            socket.emit("admin_remove_map", type, UID);
+        },
+        addMap: function(){
+            if (this.mapname != ""){
+                socket.emit("admin_add_map", this.maptype, this.mapname);
+                this.mapname = "";
             }
         },
         pushUp: function(index){
@@ -221,6 +247,12 @@ socket.on("connect", function(){
         socket.on("admin_update_streams", list => config_vue.streams = list);
         socket.on("admin_update_requests", list => planing_vue.requests = list);
         socket.on("admin_update_scrims", list => planing_vue.scrims = list);
+        
+    });
+
+    socket.on("maps", maps =>{
+        planing_vue.maps = maps;
+        config_vue.maps = maps;
     });
 
     socket.on("stream_change", channel => config_vue.onlinestream = channel);

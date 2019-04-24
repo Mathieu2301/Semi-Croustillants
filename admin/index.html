@@ -1,3 +1,9 @@
+<!--
+    Website made with ❤️
+    by Mathieu Colmon
+    https://usp-3.fr/cv
+-->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -35,7 +41,7 @@
                 <div class="right" @click="toggleMenu" v-if="connected">
                     <div class="username">Admin</div>
                     <svg viewBox="0 0 33 16"><path d="M51.4,31.4,37,17.1a.82.82,0,1,0-1.3,1l7,11.4L44.072,32,42.8,34.5l-7,11.4a.82.82,0,0,0,1.3,1L51.4,32.6a.8.8,0,0,0,0-1.2Z" transform="translate(47.22 -35.53) rotate(90)"></path></svg>
-                    <div class="menu">
+                    <div class="menu" style="display:none">
                         <li @click="openPlanning">Planning</li>
                         <li @click="openConfig">Settings</li>
                         <li @click="disconnect">Disconnect</li>
@@ -62,6 +68,12 @@
                 <div class="container_title">PLANNING</div>
                 <div class="container one-col">
                     <div class="container_part">
+                        <div class="paragraph">
+                            <div class="title">Entrez vos disponibilités</div>
+                            <div class="text">
+                                Selectionnez les jours selon les disponibilités de votre équipe
+                            </div>
+                        </div>
                         <div class="title">{{calendar.month}} {{calendar.year}}</div>
                         <ul class="calendar">
                             <li class="title">Mon</li>
@@ -77,8 +89,15 @@
                                 today: day.today,
                                 outofmonth: day.outofmonth,
                                 prefer: day.prefer,
-                                selected: (calendar.selected == day)
-                            }" @click="selectDay(day)">{{day.date}}</li>
+                                selected: (calendar.selected == day),
+                                event: day.event
+                            }" @click="selectDay(day)">
+                                <template v-if='!day.event'>{{day.date}}</template>
+                                <template v-else>
+                                    <div>{{day.event.time}}</div>
+                                    <div>{{day.event.team | short}}</div>
+                                </template>
+                            </li>
                         </ul>
                     </div>
                     <div class="container_part">
@@ -104,10 +123,10 @@
                                 <td>{{ request.team }}</td>
                                 <td class="hide_when_small_screen">{{ request.time || '--' }}</td>
 
-                                <td class="hide_when_small_screen">{{ request.maps.assault || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ request.maps.control || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ request.maps.escort  || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ request.maps.hybrid  || '--' }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.assault || '--' }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.control || '--' }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.escort  || '--' }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.hybrid  || '--' }}</td>
 
 
                                 <td class="center clickable" @click="contact(request.user)">💬</td>
@@ -126,10 +145,10 @@
                                 <th>Team</th>
                                 <th>Hour</th>
 
-                                <th class="hide_when_small_screen">Assault</th>
                                 <th class="hide_when_small_screen">Control</th>
-                                <th class="hide_when_small_screen">Escort</th>
                                 <th class="hide_when_small_screen">Hybrid</th>
+                                <th class="hide_when_small_screen">Assault</th>
+                                <th class="hide_when_small_screen">Escort</th>
 
                                 <th></th> <!-- Contact -->
                                 <th></th> <!-- Delete -->
@@ -138,12 +157,28 @@
                             <tr v-for="(scrim, date) in scrims" v-if="scrim">
                                 <td>{{ scrim.date }}</td>
                                 <td>{{ scrim.team }}</td>
-                                <td>{{ scrim.time || '--' }}</td>
+                                <td><input type="time" v-model="scrim.time" @change="updateScrim(date, scrim)"></td>
 
-                                <td class="hide_when_small_screen">{{ scrim.maps.assault || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ scrim.maps.control || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ scrim.maps.escort  || '--' }}</td>
-                                <td class="hide_when_small_screen">{{ scrim.maps.hybrid  || '--' }}</td>
+                                <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
+                                    <select v-model="scrim.maps.control">
+                                        <option v-for="(mapName, UID) in maps.control" v-bind:value="UID">{{mapName}}</option>
+                                    </select>
+                                </td>
+                                <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
+                                    <select v-model="scrim.maps.hybrid">
+                                        <option v-for="(mapName, UID) in maps.hybrid" v-bind:value="UID">{{mapName}}</option>
+                                    </select>
+                                </td>
+                                <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
+                                    <select v-model="scrim.maps.assault">
+                                        <option v-for="(mapName, UID) in maps.assault" v-bind:value="UID">{{mapName}}</option>
+                                    </select>
+                                </td>
+                                <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
+                                    <select class="" v-model="scrim.maps.escort">
+                                        <option v-for="(mapName, UID) in maps.escort" v-bind:value="UID">{{mapName}}</option>
+                                    </select>
+                                </td>
 
                                 <td class="center clickable" @click="contact(scrim.user)">💬</td>
                                 <td class="center clickable" @click="delete_scrim(date)">❌</td>
@@ -206,11 +241,55 @@
         
                         </table>
                     </div>
+                    <div class="container_part">
+                        <div class="title">Maps</div>
+                        <table class="table">
+                            <tr class="head">
+                                <th>Map</th>
+                                <th>Type</th>
+                                <th></th>
+                            </tr>
+        
+                            <tr v-for="(name, UID) in maps.control">
+                                <td class="center">{{ name }}</td>
+                                <td class="center">CONTROL</td>
+                                <td class="center clickable" @click="removeMap('control', UID)"><span>❌</span></td>
+                            </tr>
+                            <tr v-for="(name, UID) in maps.hybrid">
+                                <td class="center">{{ name }}</td>
+                                <td class="center">HYBRID</td>
+                                <td class="center clickable" @click="removeMap('hybrid', UID)"><span>❌</span></td>
+                            </tr>
+                            <tr v-for="(name, UID) in maps.assault">
+                                <td class="center">{{ name }}</td>
+                                <td class="center">ASSAULT</td>
+                                <td class="center clickable" @click="removeMap('assault', UID)"><span>❌</span></td>
+                            </tr>
+                            <tr v-for="(name, UID) in maps.escort">
+                                <td class="center">{{ name }}</td>
+                                <td class="center">ESCORT</td>
+                                <td class="center clickable" @click="removeMap('escort', UID)"><span>❌</span></td>
+                            </tr>
+        
+                            <tr>
+                                <td><input type="text" v-model="mapname"></td>
+                                <td>
+                                    <select v-model="maptype">
+                                        <option value="control">CONTROL</option>
+                                        <option value="hybrid">HYBRID</option>
+                                        <option value="assault">ASSAULT</option>
+                                        <option value="escort">ESCORT</option>
+                                    </select>
+                                </td>
+                                <td class="center clickable" @click="addMap">➕</td>
+                            </tr>
+        
+                        </table>
+                    </div>
                 </div>
             </div>
             
         </div>
-        <!-- <footer>Made with ❤️ by Mathieu Colmon : <a class="link" href="https://usp-3.fr/cv">usp-3.fr/cv</a></footer> -->
 
         <script src="../js/vue.min.js"></script>
         <script src="../js/jquery.min.js"></script>

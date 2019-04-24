@@ -13,7 +13,7 @@ html, body {
 }
 
 @media screen and (max-width: 1050px) { /* MOBILE/TABLET ONLY */
-    header>.right {display: none !important;}
+
     .container_part {
         width: calc(100% - 40px) !important;
         padding: 0 !important;
@@ -100,7 +100,7 @@ header {
     width: 100%;
     background-color: var(--dark-blue);
     height: 55px;
-    z-index: 10;
+    z-index: 30;
     box-shadow: 0px 6px var(--main);
 }
 
@@ -139,18 +139,25 @@ header>.right>svg{
 
 header>.right.opened>svg{transform: rotate(-540deg);}
 header>.right>.menu{
-    height: 0;
     position: absolute;
     top: 61px;
-    right: 0px;
+    width: 150px;
+    right: 0;
     list-style: none;
     background-color: var(--dark2);
+    height:0;
 }
-header>.right.opened>.menu{height:initial}
+header>.right.opened>.menu{height:127px}
 
-header>.right.opened>.menu>li {
+header>.right>.menu>li {
     padding: 12px 20px;
 }
+
+header>.right>.menu>li:last-child {
+    border-top: 2px solid var(--light2);
+}
+
+header>.right>.menu>li:hover {background-color: var(--dark3);}
 
 header>.right.opened>.menu>li:hover {
     background-color: var(--dark3);
@@ -205,7 +212,7 @@ header>.right.opened>.menu>li:hover {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 14.28%);
     list-style: none;
     text-align: center;
 }
@@ -230,14 +237,19 @@ header>.right.opened>.menu>li:hover {
 .container_part>.calendar>li.day.prefer {
     box-shadow: inset 0px 0px 0px 1px var(--main);
 }
-.container_part>.calendar>li.day.today {font-weight:bold}
-.container_part>.calendar>li.day.today:not(.prefer) {border: dashed 1px var(--dark3);}
+.container_part>.calendar>li.day.today {font-weight:bold;}
+.container_part>.calendar>li.day.today:not(.prefer) {border: dashed 1px var(--dark3);padding: 11px 0;}
 
 .container_part>.calendar>li.day.prefer.today{
     box-shadow: inset 0px 0px 0px 1px var(--dark2);
 }
 .container_part>.calendar>li.day.outofmonth {
     color: var(--light4);
+}
+.container_part>.calendar>li.day.event {
+    background-color: var(--main1-transparent);
+    padding: 7px 0 !important;
+    font-size: 11px;
 }
 
 .right_form {
@@ -440,6 +452,14 @@ input[type="password"]{
 
 .table td.center{
     text-align: center;
+}
+
+.table td:last-child {
+    padding: 0 5px 0 3px;
+}
+
+.table td.regular>*{
+    width: 130px;
 }
 
 .table td.clickable:hover{
