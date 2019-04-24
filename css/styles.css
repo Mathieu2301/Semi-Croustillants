@@ -450,8 +450,14 @@ input[type="password"]{
     padding-left: 10px;
 }
 
-.table td.center{
+.table td.center,
+.table th.center{
     text-align: center;
+}
+
+.table td.left,
+.table th.left{
+    text-align: left;
 }
 
 .table td:last-child {

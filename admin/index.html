@@ -123,10 +123,10 @@
                                 <td>{{ request.team }}</td>
                                 <td class="hide_when_small_screen">{{ request.time || '--' }}</td>
 
-                                <td class="hide_when_small_screen regular">{{ request.maps.assault || '--' }}</td>
-                                <td class="hide_when_small_screen regular">{{ request.maps.control || '--' }}</td>
-                                <td class="hide_when_small_screen regular">{{ request.maps.escort  || '--' }}</td>
-                                <td class="hide_when_small_screen regular">{{ request.maps.hybrid  || '--' }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.assault | map('assault') }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.control | map('control') }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.escort  | map('escort') }}</td>
+                                <td class="hide_when_small_screen regular">{{ request.maps.hybrid  | map('hybrid') }}</td>
 
 
                                 <td class="center clickable" @click="contact(request.user)">💬</td>
@@ -161,21 +161,25 @@
 
                                 <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
                                     <select v-model="scrim.maps.control">
+                                        <option value="--">--</option>
                                         <option v-for="(mapName, UID) in maps.control" v-bind:value="UID">{{mapName}}</option>
                                     </select>
                                 </td>
                                 <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
                                     <select v-model="scrim.maps.hybrid">
+                                        <option value="--">--</option>
                                         <option v-for="(mapName, UID) in maps.hybrid" v-bind:value="UID">{{mapName}}</option>
                                     </select>
                                 </td>
                                 <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
                                     <select v-model="scrim.maps.assault">
+                                        <option value="--">--</option>
                                         <option v-for="(mapName, UID) in maps.assault" v-bind:value="UID">{{mapName}}</option>
                                     </select>
                                 </td>
                                 <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
                                     <select class="" v-model="scrim.maps.escort">
+                                        <option value="--">--</option>
                                         <option v-for="(mapName, UID) in maps.escort" v-bind:value="UID">{{mapName}}</option>
                                     </select>
                                 </td>

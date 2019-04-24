@@ -83,6 +83,7 @@ var planing_vue = new Vue({
             selected: 0,
             min: today,
         },
+        maps: {},
         requests: {},
         scrims: {}
     },
@@ -144,13 +145,14 @@ var planing_vue = new Vue({
     filters: {
         date: function(time){
             var date = new Date(time);
-            return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()))
+            return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()));
         },
         short: function(text){
             if (text.length > 15){
-                return text.slice(0, 16) + "..."
+                return text.slice(0, 16) + "...";
             }else return text;
-        }
+        },
+        map: (mapUID, type) => ((mapUID.length > 4) ? config_vue.maps[type][mapUID] : "--")
     }
 });
 

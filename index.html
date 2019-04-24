@@ -103,9 +103,9 @@
                             <div class="name">TEAM NAME<span class="required">*</span></div>
                             <input type="text" v-model="form.team_name" placeholder="ex: Les très croustillants">
                         </div>
-                        <div class="input small required" v-bind:class="{ error: (form.error && (form.date=='' || calendar.min-86400000 > new Date(form.date).getTime())), success: (form.error && calendar.min <= new Date(form.date).getTime()) }">
+                        <div class="input small required" v-bind:class="{ error: (form.error && !form.dateValid), success: (form.error && form.dateValid) }">
                             <div class="name">DATE<span class="required">*</span></div>
-                            <input type="date" v-model="form.date" v-bind:value="form.date | date" v-bind:min="calendar.min | date">
+                            <input type="date" v-model="form.date" v-bind:value="form.date | date" v-bind:min="calendar.min | date" @change="validRequestDate">
                         </div>
                         <div class="input small" v-bind:class="{ valid: form.time != '' }">
                             <div class="name">TIME</div>
@@ -155,7 +155,6 @@
                     </div>
                 </div>
             </div>
-        
         </div>
 
         <script src="./js/vue.min.js"></script>

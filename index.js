@@ -96,6 +96,7 @@ var ask_form = new Vue({
             discordID: localStorage.getItem("discordID"),
             team_name: localStorage.getItem("team_name"),
             date:"",
+            dateValid: false,
             time:"",
             maps: {},
             control_map:"",
@@ -110,7 +111,7 @@ var ask_form = new Vue({
         submit: function(e){
             e.preventDefault();
 
-            if (this.validDiscordID(this.form.discordID) && this.form.team_name.length>=3 && this.form.date != "" && (today-86400000 < new Date(this.form.date).getTime())){
+            if (this.validDiscordID(this.form.discordID) && this.form.team_name.length>=3 && this.form.date != "" && ask_form.validRequestDate()){
                 var dateSelected = new Date(this.form.date);
 
                 var form_data = {
@@ -131,7 +132,6 @@ var ask_form = new Vue({
 
                 socket.emit('newScrimRequest', form_data, function(rs){
                     rs = JSON.parse(rs);
-                    console.log(rs)
                     if (rs.success){
                         _this.form.error = false;
                         izitoast_show("Scrim request sent", rs.message)
@@ -167,6 +167,11 @@ var ask_form = new Vue({
             }else{
                 return false;
             }
+        },
+        validRequestDate: function(){
+            let date = new Date(this.form.date);
+            let day = ask_form.calendar.days.filter(v=>(v.date==date.getDate() && v.month==date.getMonth()))[0];
+            return this.form.dateValid = (date.toJSON() && !isNaN(date.getTime()) && (today-86400000 < date.getTime()) && (!day || !day.event))
         }
     },
     filters: {
