@@ -11,6 +11,7 @@ var header_vue = new Vue({
         MenuOpened: false
     },
     methods: {
+        openHome: ()=> navigateApp("../"),
         toggleMenu: function(){
             if (!this.MenuOpened){
                 $("header>.right>.menu").show();
@@ -63,6 +64,7 @@ var login_vue = new Vue({
                         izitoast_show("Logged in", "You are logged in");
                     }else{
                         login_vue.wrongpassword = login_vue.password;
+                        localStorage.removeItem("auth");
                         login_vue.visible = true;
                         izitoast_show("Error", rs.message, true);
                     }
@@ -242,6 +244,7 @@ socket.on("connect", function(){
             planing_vue.visible = true;
             header_vue.connected = true;
         }else{
+            localStorage.removeItem("auth");
             login_vue.visible = true;
         }
 
@@ -320,6 +323,13 @@ function izitoast_confirm(title, question, callback){
 
 
 function addZeros(val){return(val<10)?'0'+val:val}
+
+function navigateApp(url){
+    $(".body").fadeOut(100, function(){
+        $(".loader").fadeIn();
+        setTimeout(()=> location.replace(url), 500)
+    })
+}
 
 function reloadApp(){
     $(".body").fadeOut(100, function(){

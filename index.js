@@ -4,6 +4,35 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 var today = Date.now();
 
+var header_vue = new Vue({
+    el: '#header_vue',
+    data: {
+        connected: (localStorage.getItem("auth") && localStorage.getItem("auth").length == 50)
+    },
+    methods: {
+        toggleMenu: function(){
+            if (!this.MenuOpened){
+                $("header>.right>.menu").show();
+                setTimeout(()=> $("header>.right").addClass("opened"), 20);
+                this.MenuOpened = true;
+            }else{
+                $("header>.right").removeClass("opened")
+                setTimeout(function(){
+                    $("header>.right>.menu").hide();
+                }, 300)
+                this.MenuOpened = false;
+            }
+        },
+        admin: function(){
+            navigateApp("./admin")
+        },
+        disconnect: function(){
+            localStorage.removeItem("auth");
+            reloadApp();
+        }
+    }
+});
+
 var profils_grid = new Vue({
     el: '#profils_grid',
     data: {
@@ -98,7 +127,6 @@ var ask_form = new Vue({
             date:"",
             dateValid: false,
             time:"",
-            maps: {},
             control_map:"",
             hybrid_map:"",
             assault_map:"",
@@ -106,6 +134,7 @@ var ask_form = new Vue({
             
             error: false
         },
+        maps: {},
     },
     methods: {
         submit: function(e){
@@ -211,6 +240,20 @@ socket.on("connect", function(){
 
 })
 
+function navigateApp(url){
+    $(".body").fadeOut(100, function(){
+        $(".loader").fadeIn();
+        setTimeout(()=> location.replace(url), 500)
+    })
+}
+
+function reloadApp(){
+    $(".body").fadeOut(100, function(){
+        $(".loader").fadeIn();
+        setTimeout(()=> location.reload(), 500)
+    })
+}
+
 function izitoast_show(title, message, error=false){
     iziToast.show({
         theme: 'dark',
@@ -226,7 +269,14 @@ function izitoast_show(title, message, error=false){
 
 function addZeros(val){return(val<10)?'0'+val:val}
 
-$(function(){    
+$(function(){
+
+    window.onclick = function(event) {
+        if (!event.target.matches("header>.right *")) {
+            $("header>.right").removeClass("opened")
+            header_vue.MenuOpened = false;
+        }
+    }
 
     jQuery('img.svg').each(function(){
         var $img = jQuery(this);

@@ -15,10 +15,9 @@ html, body {
 @media screen and (max-width: 1050px) { /* MOBILE/TABLET ONLY */
 
     .container_part {
-        width: calc(100% - 40px) !important;
-        padding: 0 !important;
-        margin-bottom: 70px !important;
+        margin: 20px 10px !important;
     }
+    
     .container.two-col {
         grid: auto auto/ 100% !important;
     }
@@ -41,7 +40,10 @@ html, body {
 
 @media screen and (max-width: 600px) { /* MOBILE ONLY */
     .hide_when_small_screen{display:none}
-    header>p {text-align:center !important;width: 100% !important;padding: 0 !important;}
+
+    .body>div>div{
+        width: calc(100% - 20px) !important;
+    }
     
     .container_part>.calendar>li.title {
         padding-bottom: 0 !important;
@@ -147,7 +149,7 @@ header>.right>.menu{
     background-color: var(--dark2);
     height:0;
 }
-header>.right.opened>.menu{height:127px}
+header>.right.opened>.menu{height:auto}
 
 header>.right>.menu>li {
     padding: 12px 20px;
