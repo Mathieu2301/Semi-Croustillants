@@ -139,7 +139,7 @@ header>.right>svg{
     padding: 24px 4px;
 }
 
-header>.right.opened>svg{transform: rotate(-540deg);}
+header>.right.opened>svg{transform: rotate3d(1, 0, 0, 180deg);}
 header>.right>.menu{
     position: absolute;
     top: 61px;
