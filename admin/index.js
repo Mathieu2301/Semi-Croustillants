@@ -167,10 +167,12 @@ var config_vue = new Vue({
         onlinestream: "",
         maxRequestPerIP: 3,
         managerDiscordAUTH: "",
-
+        
         maps: {},
         mapname: "",
         maptype: "",
+
+        online_clients: [],
     },
     methods: {
         selectDay: function(day){
@@ -232,7 +234,12 @@ var config_vue = new Vue({
         date: function(time){
             var date = new Date(time);
             return (date.getFullYear() + "-" + addZeros(date.getMonth()+1) + "-" + addZeros(date.getDate()))
-        }
+        },
+        hour: function(time){
+            var date = new Date(time);
+            return (addZeros(date.getHours()) + ":" + addZeros(date.getMinutes()) + ":" + addZeros(date.getSeconds()))
+        },
+        yesno: bool => bool ? "Yes" : "No"
     }
 });
 
@@ -261,10 +268,12 @@ socket.on("connect", function(){
     });
 
     socket.on("stream_change", channel => config_vue.onlinestream = channel);
-
+    
     socket.on("planning", function(days){
         planing_vue.calendar.days = days;
     });
+    
+    socket.on("admin_update_online", online_clients => config_vue.online_clients = online_clients);
 
     $(function(){
         setTimeout(function(){

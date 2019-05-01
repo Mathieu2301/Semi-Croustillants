@@ -246,6 +246,29 @@
         
                         </table>
                     </div>
+
+                    <div class="container_part">
+                        <div class="title">Online</div>
+                        <table class="table">
+                            <tr class="head">
+                                <th>Lang</th>
+                                <th>Browser</th>
+                                <th>System</th>
+                                <th>Address</th>
+                                <th>Admin</th>
+                            </tr>
+        
+                            <tr v-for="(client, socketID) in online_clients">
+                                <td class="center">{{ client.language }}</td>
+                                <td class="center">{{ client.browser.name }}</td>
+                                <td class="center">{{ client.os.name }} {{ client.os.version }}</td>
+                                <td class="center">{{ client.address }}</td>
+                                <td class="center">{{ client.admin | yesno }}</td>
+                            </tr>
+        
+                        </table>
+                    </div>
+
                     <div class="container_part">
                         <div class="title">Maps</div>
                         <table class="table">
