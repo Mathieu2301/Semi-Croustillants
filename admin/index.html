@@ -157,7 +157,7 @@
 
                             <tr v-for="(scrim, date) in scrims" v-if="scrim">
                                 <td>{{ scrim.date }}</td>
-                                <td>{{ scrim.team }}</td>
+                                <td><input type="text" v-model="scrim.team" @change="updateScrim(date, scrim)"></td>
                                 <td><input type="time" v-model="scrim.time" @change="updateScrim(date, scrim)"></td>
 
                                 <td class="hide_when_small_screen center regular" @change="updateScrim(date, scrim)">
