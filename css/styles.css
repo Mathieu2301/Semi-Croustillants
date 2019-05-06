@@ -236,7 +236,7 @@ header>.right.opened>.menu>li:hover {
 .container_part>.calendar>li.day.impossible {
     background-color: var(--light2);
 }
-.container_part>.calendar>li.day.prefer {
+.container_part>.calendar>li.day.prefer:not(.impossible) {
     box-shadow: inset 0px 0px 0px 1px var(--main);
 }
 .container_part>.calendar>li.day.today {font-weight:bold;}
